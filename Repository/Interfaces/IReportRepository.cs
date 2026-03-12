@@ -1,6 +1,12 @@
-﻿namespace Dealership.Repository.Implementations
+﻿using Dealership.Model.Entities;
+
+namespace Dealership.Repository.Interfaces;
+
+public interface IReportRepository
 {
-    public class IReportRepository
-    {
-    }
+    //GetLocByMonth
+    //GetLocByMonthBrand
+    //GetLocByMonthPaymentMethod
+    //GetClientsCosts
+    //GetActiveContracts
 }

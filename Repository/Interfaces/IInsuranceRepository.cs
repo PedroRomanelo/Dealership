@@ -1,6 +1,10 @@
-﻿namespace Dealership.Repository.Implementations
+﻿using Dealership.Model.Entities;
+
+namespace Dealership.Repository.Interfaces;
+
+public interface IInsuranceRepository
 {
-    public class IInsuranceRepository
-    {
-    }
+    //GetAllAsync
+    //UpdateAsync
+    //InsertAsync
 }

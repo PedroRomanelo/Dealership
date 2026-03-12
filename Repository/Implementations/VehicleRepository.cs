@@ -1,6 +1,6 @@
 ﻿namespace Dealership.Repository.Implementations
 {
-    public class IVehicleRepository
+    public class VehicleRepository
     {
     }
 }

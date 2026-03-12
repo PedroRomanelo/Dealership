@@ -1,6 +1,13 @@
-﻿namespace Dealership.Repository.Implementations
+﻿using Dealership.Model.Entities;
+
+namespace Dealership.Repository.Interfaces;
+
+public interface IUserRepository
 {
-    public class IUserRepository
-    {
-    }
+    //GetByDocument
+    //GetByModel
+    //DeactiveAsync
+    //ReactivateAsync
+    //RegisterAsync
+    //UpdateAsync
 }

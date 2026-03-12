@@ -1,6 +1,10 @@
-﻿namespace Dealership.Repository.Implementations
+﻿using Dealership.Model.Entities;
+
+namespace Dealership.Repository.Interfaces;
+
+public interface IUserAdminRepository
 {
-    public class IUserAdminRepository
-    {
-    }
+    // RegisterAssync
+    // LoginAsync
+    // ChangePasswordAsync
 }

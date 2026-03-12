@@ -1,6 +1,12 @@
-﻿namespace Dealership.Repository.Implementations
+﻿using Dealership.Model.Entities;
+
+namespace Dealership.Repository.Interfaces;
+
+public interface IPaymentMethodRepository
 {
-    public class IPaymentMethodRepository
-    {
-    }
+    //GetAllAsync
+    //DeactiveAsync
+    //ReactivateAsync
+    //UpdateAsync
+    //InsertAsync
 }

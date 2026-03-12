@@ -1,6 +1,13 @@
-﻿namespace Dealership.Repository.Implementations
+﻿using Dealership.Model.Entities;
+
+namespace Dealership.Repository.Interfaces;
+
+public interface IVehicleRepository
 {
-    public class IVehicleRepository
-    {
-    }
+    //GetByPlateAsync
+    //GetByModelAsync
+    //DeactivateAsync()
+    //ReactivateAsync()
+    //UpdateAsync
+    //InsertAsync
 }
