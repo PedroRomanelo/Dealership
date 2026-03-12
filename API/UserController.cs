@@ -1,6 +1,6 @@
 ﻿namespace Dealership.API
 {
-    public class AdminController
+    public class UserController
     {
     }
 }
