@@ -10,7 +10,7 @@ public class ContractRepository(string connectionString) : BaseRepository(connec
         using var db = CreateConnection();
 
         string sql = @"
-            INSERT INTO Constracts (ContractNumber, UserId, ContractData, ContractStartData, ContractEndData, Insurance, TotalPrice, PaymentMethod)
+            INSERT INTO Contracts (ContractNumber, UserId, ContractData, ContractStartData, ContractEndData, Insurance, TotalPrice, PaymentMethod)
             VALUES (@ContractNumber, @UserId, @ContractData, @ContractStartData, @ContractEndData, @Insurance, @TotalPrice, @PaymentMethod);
 
             SELECT CAST(SCOPE_IDENTITY() AS INT);";

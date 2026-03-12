@@ -4,7 +4,7 @@ namespace Dealership.Repository.Interfaces;
 
 public interface IInsuranceRepository
 {
-    //GetAllAsync
-    //UpdateAsync
-    //InsertAsync
+    Task<int> InsertAsync(Insurance insurance);
+    Task<bool> UpdateAsync(Insurance insurance);
+    Task<IEnumerable<Insurance>> GetByModelAsync(int modelId);
 }
