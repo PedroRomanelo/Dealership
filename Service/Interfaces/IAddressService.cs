@@ -1,7 +1,9 @@
-﻿namespace Dealership.Service.Interfaces;
+﻿using Microsoft.AspNetCore.Identity.Data;
+
+namespace Dealership.Service.Interfaces;
 
 public interface IAddressService
 {
-    Task() GetActiveAddressByUserIdAsync(int userId);
-    Task() CreateOrReplaceAsync(int userId, CreateAddressRequest request);
+    Task<int> CreateAsync (LoginRequest request);
+    //Task CreateOrReplaceAsync(int userId, CreateAddressRequest request);
 }

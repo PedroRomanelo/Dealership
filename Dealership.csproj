@@ -9,7 +9,16 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.72" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.5" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.16.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\Response\Address\" />
+    <Folder Include="Model\Response\Report\" />
   </ItemGroup>
 
 </Project>

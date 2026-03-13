@@ -1,4 +1,4 @@
-﻿2namespace Dealership.API
+﻿namespace Dealership.API
 {
     public class ContractsController
     {

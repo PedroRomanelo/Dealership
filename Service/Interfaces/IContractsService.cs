@@ -2,6 +2,5 @@
 
 public interface IContractsService
 {
-    Task() PreviewAsync(ContractRequest request);
-    Task() CreateAsync(ContractRequest request);
+    //Task<>
 }
