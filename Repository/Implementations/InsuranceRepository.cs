@@ -12,9 +12,8 @@ public class InsuranceRepository(string connectionString) : BaseRepository(conne
 
         string sql = @"
             INSERT INTO Insurances (Description, ModelId, DailyRate)
-            VALUES (@Description, @ModelId, @DailyRate)
-            SELECT CAST(SCOPE_IDENTITY() AS INT);
-            ";
+            VALUES (@Description, @ModelId, @DailyRate);
+            SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
         return await db.ExecuteScalarAsync<int>(sql, insurance);
     }
@@ -25,14 +24,14 @@ public class InsuranceRepository(string connectionString) : BaseRepository(conne
 
         string sql = @"
         UPDATE Insurances 
-        SET @Description = Description, @ModelId = ModelId, @DailyRate = DailyRate;
-        WHERE @Id = Id
+        SET Description = @Description, ModelId = @ModelId, DailyRate = @DailyRate;
+        WHERE Id = @Id
         ";
         int rowsAffected = await db.ExecuteAsync(sql, insurance);
         return rowsAffected > 0;
     }
 
-    public async Task<IEnumerable<Insurance>> GetByModelId(int modelId)
+    public async Task<IEnumerable<Insurance>> GetByModelAsync(int modelId)
     {
         using var db = CreateConnection();
 
@@ -43,4 +42,3 @@ public class InsuranceRepository(string connectionString) : BaseRepository(conne
         return await db.QueryAsync<Insurance>(sql, modelId);
     }
 }
-

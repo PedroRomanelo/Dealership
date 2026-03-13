@@ -4,10 +4,10 @@ namespace Dealership.Repository.Interfaces;
 
 public interface IModelRepository
 {
-    //GetByModelAsync
-    //GetByBrandAsync
-    //DeactiveAsync
-    //ReactivateAsync
-    //UpdateAsync
-    //InsertAsync
+    Task<int> CreateAsync(Models model);
+    Task<bool> UpdateAsync(Models model);
+    Task<bool> DeactivateAsync(int ModelId );
+    Task<bool> ReactivateAsync(int ModelId);
+    Task<IEnumerable<Models>> GetByModelAsync(int Id);
+    Task<IEnumerable<Models>> GetByBrandAsync(int Id);
 }

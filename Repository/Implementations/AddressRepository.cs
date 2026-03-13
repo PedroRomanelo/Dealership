@@ -5,7 +5,7 @@ using Dealership.Repository.Interfaces;
 namespace Dealership.Repository.Implementations;
 public class AddressRepository(string connectionString) : BaseRepository(connectionString), IAddressRepository
 {
-    public async Task<int> InsertAsync( UserAddress address)
+    public async Task<int> CreateAsync( UserAddress address)
     {
         using var db = CreateConnection();
 
@@ -28,6 +28,31 @@ public class AddressRepository(string connectionString) : BaseRepository(connect
             WHERE Id = @Id";
 
         int rowsAffected = await db.ExecuteAsync(sql, address);
+        return rowsAffected > 0;
+    }
+
+    public async Task<bool> DeactivateByUserIdAsync(int userId) {
+        using var db = CreateConnection();
+
+        string sql = @"
+            UPDATE UserAddress
+            SET Status = 0
+            WHERE UserId = @userId";
+
+        int rowsAffected = await db.ExecuteAsync(sql, new { userId });
+        return rowsAffected > 0;
+    }
+
+    public async Task<bool> ReactivateByUserIdAsync(int userId)
+    {
+        using var db = CreateConnection();
+
+        const string sql = @"
+        UPDATE UserAddress 
+        SET Status = 1
+        WHERE UserId = @userId";
+
+        int rowsAffected = await db.ExecuteAsync(sql, new { userId });
         return rowsAffected > 0;
     }
 }

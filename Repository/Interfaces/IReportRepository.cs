@@ -4,9 +4,9 @@ namespace Dealership.Repository.Interfaces;
 
 public interface IReportRepository
 {
-    //GetLocByMonth
-    //GetLocByMonthBrand
-    //GetLocByMonthPaymentMethod
-    //GetClientsCosts
-    //GetActiveContracts
+    Task<bool> GetRentalsByMonthAsync(int year);
+    Task<bool> GetRentalsByMonthAndBrandAsync(int year);
+    Task<bool> GetRentalsByMonthAndPaymentMethodAsync(int year);
+    Task<bool> GetCustomersTotalSpentAsync();
+    Task<bool> GetActiveContractsWithRemainingTimeAsync();
 }

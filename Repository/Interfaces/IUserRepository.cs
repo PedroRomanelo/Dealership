@@ -4,10 +4,10 @@ namespace Dealership.Repository.Interfaces;
 
 public interface IUserRepository
 {
-    //GetByDocument
-    //GetByModel
-    //DeactiveAsync
-    //ReactivateAsync
-    //RegisterAsync
-    //UpdateAsync
+    Task<int> CreateAsync(Users user);
+    Task<bool> UpdateAsync(Users user);
+    Task<bool> DeactivateAsync(int Id);
+    Task<bool> ReactivateAsync(int Id);
+    Task<IEnumerable<Users>> GetByDocumentAsync(string document);
+    Task<IEnumerable<Users>> GetByEmailAsync(string email);
 }

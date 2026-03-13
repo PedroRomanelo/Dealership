@@ -26,4 +26,4 @@ public class ContractRepository(string connectionString) : BaseRepository(connec
             ";
         return await db.QueryAsync<Contracts>(sql);
     }
-}
+} 

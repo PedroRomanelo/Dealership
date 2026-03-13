@@ -1,6 +1,7 @@
-﻿namespace Dealership.Service.Interfaces
+﻿namespace Dealership.Service.Interfaces;
+
+public interface IContractsService
 {
-    public interface IContractsService
-    {
-    }
+    Task() PreviewAsync(ContractRequest request);
+    Task() CreateAsync(ContractRequest request);
 }
