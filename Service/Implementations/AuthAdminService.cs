@@ -4,6 +4,7 @@ using Dealership.Repository.Interfaces;
 using Dealership.Service.Interfaces;
 using Microsoft.AspNetCore.Identity.Data;
 using Dealership.Model.Response.Admin;
+using BCrypt.Net;
 
 namespace Dealership.Service.Implementations;
 
@@ -28,8 +29,9 @@ public class AuthService
 
     public async Task<AdminResponseVM> RegisterAsync(RegisterAdminVM request) 
     {
-        var UserExist = await _adminUserRepository.GetByLoginAsync(request.Login);
-        if(UserExist != null)
+        var userExist = await _adminUserRepository.GetByLoginAsync(request.Login);
+
+        if (userExist != null)
         {
             throw new Exception("Login já cadastrado");
         }
@@ -53,7 +55,53 @@ public class AuthService
             Token = tokenJwt,
         };
     }
-    public async Task<bool> LoginAsync(LoginAdminVM request) { }
-    public async Task<bool> ForgotPasswordAsync(ForgotPasswordRequestVM request) { }
-    public async Task<bool> ResetPasswordAsync(ResetPasswordRequestVM request) { }
+    public async Task<AdminResponseVM> LoginAsync(LoginAdminVM request)
+    {
+        var user = await _adminUserRepository.GetByLoginAsync(request.Login);
+
+        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
+        {
+            throw new Exception("Login ou senha inválidos");
+        }
+
+        string token = _tokenService.GenerateToken(user);
+
+        return new AdminResponseVM
+        {
+            Token = token
+        };
+    }
+    public async Task<bool> ForgotPasswordAsync(ForgotPasswordRequestVM request)
+    {
+        var user = await _adminUserRepository.GetByLoginAsync(request.Login);
+
+        if (user == null)
+        {
+            return true; //
+        }
+
+        // 2. Gera o token usando o serviço que o senhor criou
+        string recoveryToken = _passwordRecoveryTokenService.GenerateRecoveryToken(user);
+
+        // 3. Envia o e-mail via Brevo
+        await _emailService.SendRecoveryEmailAsync(request.Login, recoveryToken);
+
+        return true;
+    }
+    public async Task<bool> ResetPasswordAsync(ResetPasswordRequestVM request)
+    {
+
+        var user = await _adminUserRepository.GetByLoginAsync(request.Login);
+
+        if (user == null)
+        {
+            throw new Exception("Usuário não encontrado.");
+        }
+
+        string novoHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+
+        await _adminUserRepository.UpdatePasswordAsync(user.Id, novoHash);
+
+        return true;
+    }
 }

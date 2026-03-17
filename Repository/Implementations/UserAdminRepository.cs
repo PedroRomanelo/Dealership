@@ -31,4 +31,16 @@ public class UserAdminRepository(string connectionString): BaseRepository(connec
         int rowsAffected = await db.ExecuteAsync(sql, new { Id = id, Password = newPassword });
         return rowsAffected > 0;
     }
+
+    public async Task<AdminUsers?> GetByLoginAsync(string login)
+    {
+        using var db = CreateConnection();
+
+        string sql = @"
+        SELECT *
+        FROM AdminUsers
+        WHERE Login = @Login";
+
+        return await db.QueryFirstOrDefaultAsync<AdminUsers>(sql, new { Login = login });
+    }
 }
