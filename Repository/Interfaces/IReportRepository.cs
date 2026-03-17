@@ -1,12 +1,12 @@
-﻿using Dealership.Model.Entities;
+﻿using Dealership.Model.Response.Report;
 
 namespace Dealership.Repository.Interfaces;
 
 public interface IReportRepository
 {
-    Task<bool> GetRentalsByMonthAsync(int year);
-    Task<bool> GetRentalsByMonthAndBrandAsync(int year);
-    Task<bool> GetRentalsByMonthAndPaymentMethodAsync(int year);
-    Task<bool> GetCustomersTotalSpentAsync();
-    Task<bool> GetActiveContractsWithRemainingTimeAsync();
+    Task<IEnumerable<MonthlyRentalReportVM>> GetRentalsByMonthAsync(int year);
+    Task<IEnumerable<BrandMonthlyReportVM>> GetRentalsByMonthAndBrandAsync(int year);
+    Task<IEnumerable<PaymentMethodMonthlyReportVM>> GetRentalsByMonthAndPaymentMethodAsync(int year);
+    Task<IEnumerable<CustomerSpendingVM>> GetCustomersTotalSpentAsync();
+    Task<IEnumerable<ActiveContractTimeVM>> GetActiveContractsWithRemainingTimeAsync();
 }

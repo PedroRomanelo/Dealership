@@ -1,13 +1,12 @@
-﻿namespace Dealership.Model.Response.Contract;
+﻿namespace Dealership.Model.Response.Rental;
 
-public class ContractResponseVM
+public class ContractSimulationVM
 {
-    public string ContractNumber { get; set; } = string.Empty;
-    public int UserId { get; set; }
-    public DateTime ContractStartData { get; set; }
-    public DateTime ContractEndData { get; set; }
-    public int InsuranceId { get; set; }
-    public decimal TotalPrice { get; set; }
-    public int PaymentMethodId { get; set; }
-    public int VehicleId { get; set; }
+    public string CustomerName { get; set; } = string.Empty;
+    public string VehiclePlate { get; set; } = string.Empty;
+    public string PaymentMethod { get; set; } = string.Empty;
+    public int TotalDays { get; set; }
+    public decimal VehicleCost { get; set; }
+    public decimal InsuranceCost { get; set; }
+    public decimal GrandTotal { get; set; }
 }

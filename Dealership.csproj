@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Model\Response\Address\" />
-    <Folder Include="Model\Response\Report\" />
   </ItemGroup>
 
 </Project>
