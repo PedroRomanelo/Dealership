@@ -24,7 +24,7 @@ public class InsuranceRepository(string connectionString) : BaseRepository(conne
 
         string sql = @"
         UPDATE Insurances 
-        SET Description = @Description, ModelId = @ModelId, DailyRate = @DailyRate;
+        SET Description = @Description, ModelId = @ModelId, DailyRate = @DailyRate
         WHERE Id = @Id
         ";
         int rowsAffected = await db.ExecuteAsync(sql, insurance);
@@ -39,6 +39,6 @@ public class InsuranceRepository(string connectionString) : BaseRepository(conne
             SELECT * FROM Insurances WHERE @ModelId = ModelId
         ";
 
-        return await db.QueryAsync<Insurance>(sql, modelId);
+        return await db.QueryAsync<Insurance>(sql, new { ModelId = modelId });
     }
 }

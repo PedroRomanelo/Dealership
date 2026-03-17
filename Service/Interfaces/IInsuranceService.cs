@@ -1,8 +1,11 @@
-﻿namespace Dealership.Service.Interfaces;
+﻿using Dealership.Model.Request.Insurance ;
+using Dealership.Model.Response.insurance;
+
+namespace Dealership.Service.Interfaces;
 
 public interface IInsuranceService
 {
-    //Task() GetByModelIdAsync(int modelId);
-    //Task() CreateAsync(CreateInsuranceRequest request, string userProfile);
-    //Task() UpdateAsync(int id, UpdateInsuranceRequest request, string userProfile);
+    Task<int> CreateAsync(InsuranceCreateVM request);
+    Task<bool> UpdateAsync(int id, InsuranceUpdateVM request);
+    Task<IEnumerable<InsuranceResponseVM>> GetByModelIdAsync(int modelId);
 }

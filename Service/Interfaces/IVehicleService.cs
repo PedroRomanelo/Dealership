@@ -1,10 +1,13 @@
-﻿namespace Dealership.Service.Interfaces;
+﻿using Dealership.Model.Request.Vehicle;
+using Dealership.Model.Response.Vehicle;
+
+namespace Dealership.Service.Interfaces;
 
 public interface IVehicleService
 {
-    //Task() GetByPlateAsync(string plate);
-    //Task() GetByModelIdAsync(int modelId);
-    //Task() CreateAsync(CreateVehicleRequest request);
-    //Task() UpdateAsync(int id, UpdateVehicleRequest request);
-    //Task() DeactivateAsync(int id);
+    Task<int> CreateAsync(VehicleCreateVM request);
+    Task<bool> UpdateAsync(int id, VehicleUpdateVM request);
+    Task<bool> DeactivateAsync(int id);
+    Task<IEnumerable<VehicleResponseVM>> GetByPlateAsync(string plate);
+    Task<IEnumerable<VehicleResponseVM>> GetByModelIdAsync(int modelId);
 }

@@ -39,7 +39,7 @@ namespace Dealership.Repository.Implementations;
 
         const string sql = @"
             UPDATE Vehicles 
-            SET IsActive = 0 
+            SET Status = 0 
             WHERE Id = @Id";
 
         int rowsAffected = await db.ExecuteAsync(sql, new { Id = id });
@@ -52,7 +52,7 @@ namespace Dealership.Repository.Implementations;
 
         const string sql = @"
             UPDATE Vehicles 
-            SET IsActive = 1 
+            SET Status = 1 
             WHERE Id = @Id";
 
         int rowsAffected = await db.ExecuteAsync(sql, new { Id = id });
