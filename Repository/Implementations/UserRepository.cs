@@ -11,8 +11,8 @@ public class UserRepository(string connectionString ):BaseRepository(connectionS
         using var db = CreateConnection();
 
         string sql = @"
-        INSERT INTO Users ( Name, Document, Email, PhoneNumber, BirthDate, Status)
-        VALUE (@Name, @Document, @Email, @PhoneNumber, @BirthDate, @Status);
+        INSERT INTO Users ( Name, Document, Email, PhoneNumber, BirthDate)
+        VALUES (@Name, @Document, @Email, @PhoneNumber, @BirthDate);
         SELECT CAST (SCOPE_IDENTITY() AS INT);";
 
         return await db.ExecuteScalarAsync<int>(sql, user);
@@ -31,7 +31,7 @@ public class UserRepository(string connectionString ):BaseRepository(connectionS
         return rowsAffected > 0;
     }
 
-    public async Task<bool> DeactivateAsync(int Id)
+    public async Task<bool> DeactivateAsync(int id)
     {
         using var db = CreateConnection();
 
@@ -40,11 +40,11 @@ public class UserRepository(string connectionString ):BaseRepository(connectionS
         SET Status = 0 
         WHERE Id = @Id";
 
-        int rowsAffected = await db.ExecuteAsync(sql, Id);
+        int rowsAffected = await db.ExecuteAsync(sql, new { Id = id });
         return rowsAffected > 0;
     }
 
-    public async Task<bool> ReactivateAsync(int Id)
+    public async Task<bool> ReactivateAsync(int id)
     {
         using var db = CreateConnection();
 
@@ -53,26 +53,26 @@ public class UserRepository(string connectionString ):BaseRepository(connectionS
         SET Status = 1 
         WHERE Id = @Id";
 
-        int rowsAffected = await db.ExecuteAsync(sql, Id);
+        int rowsAffected = await db.ExecuteAsync(sql, new { Id = id });
         return rowsAffected > 0;
     }
 
-    public async Task<IEnumerable<Users>> GetByDocumentAsync(string document)
+    public async Task<Users?> GetByDocumentAsync(string document)
     {
         using var db = CreateConnection();
 
         string sql = "SELECT * FROM Users WHERE Document = @Document"; //query sem qubra de linha nn precisa de @
 
-        return await db.QueryAsync <Users>(sql, new { Document = document });
+        return await db.QueryFirstOrDefaultAsync<Users>(sql, new { Document = document });
     }
 
-    public async Task<IEnumerable<Users>> GetByEmailAsync(string email)
+    public async Task<Users?> GetByEmailAsync(string email)
     {
         using var db = CreateConnection();
 
-        string sql = "SELECT * FROM Users WHERE email = @email";
+        string sql = "SELECT * FROM Users WHERE Email = @Email";
 
-        return await db.QueryAsync<Users>(sql, new { Email = email });
+        return await db.QueryFirstOrDefaultAsync<Users>(sql, new { Email = email });
     }
 
 

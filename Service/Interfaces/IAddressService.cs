@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
+﻿using Dealership.Model.Request.Address;
 
 namespace Dealership.Service.Interfaces;
 
 public interface IAddressService
 {
-    Task<int> CreateAsync (LoginRequest request);
-    //Task CreateOrReplaceAsync(int userId, CreateAddressRequest request);
+    Task<int> CreateAsync (AddressCreateRequest request);
+    Task<bool> UpdateAsync(int id, AddressUpdateRequest request);
+    Task<bool> DeactivateByUserIdAsync(int userId);
 }

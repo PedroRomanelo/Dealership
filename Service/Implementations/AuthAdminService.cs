@@ -8,7 +8,7 @@ using BCrypt.Net;
 
 namespace Dealership.Service.Implementations;
 
-public class AuthService
+public class AuthService : IAuthAdminService
 {
     private readonly IEmailService _emailService;
     private readonly ITokenService _tokenService;
@@ -42,7 +42,7 @@ public class AuthService
         {
             Login = request.Login,
             Password = hash,
-            Role = "admin"
+            Role = request.Roles.ToString()
         };
 
         int adminId = await _adminUserRepository.CreateAsync(newAdmin);
@@ -80,22 +80,26 @@ public class AuthService
             return true; //
         }
 
-        // 2. Gera o token usando o serviço que o senhor criou
         string recoveryToken = _passwordRecoveryTokenService.GenerateRecoveryToken(user);
 
-        // 3. Envia o e-mail via Brevo
         await _emailService.SendRecoveryEmailAsync(request.Login, recoveryToken);
 
         return true;
     }
     public async Task<bool> ResetPasswordAsync(ResetPasswordRequestVM request)
     {
-
         var user = await _adminUserRepository.GetByLoginAsync(request.Login);
 
         if (user == null)
         {
             throw new Exception("Usuário não encontrado.");
+        }
+
+        // Validação do token
+        bool isTokenValid = _passwordRecoveryTokenService.ValidateRecoveryToken(request.Token);
+        if (!isTokenValid)
+        {
+            throw new Exception("Token inválido ou expirado.");
         }
 
         string novoHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);

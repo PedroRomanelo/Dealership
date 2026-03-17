@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Dealership.Model.Request.Admin;
 using Dealership.Service.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Dealership.API.Controllers;
 

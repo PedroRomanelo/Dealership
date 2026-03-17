@@ -10,8 +10,8 @@ namespace Dealership.Repository.Implementations;
         using var db = CreateConnection();
 
         const string sql = @"
-            INSERT INTO Vehicles (LicensePlate, ModelId, Mileage, DailyRate, IsActive)
-            VALUES (@LicensePlate, @ModelId, @Mileage, @DailyRate, 1);
+            INSERT INTO Vehicles (LicensePlate, ModelId, Mileage, DailyRate)
+            VALUES (@LicensePlate, @ModelId, @Mileage, @DailyRate);
             
             SELECT CAST(SCOPE_IDENTITY() AS INT);";
 

@@ -1,4 +1,4 @@
-﻿namespace Dealership.Service.Interfaces
+﻿namespace Dealership.Service.Implementations
 {
     public class ReportService
     {

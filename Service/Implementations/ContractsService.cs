@@ -1,6 +1,6 @@
-﻿namespace Dealership.Service.Interfaces
+﻿namespace Dealership.Service.Implementations
 {
-    public class ContratoService
+    public class ContractService
     {
     }
 }

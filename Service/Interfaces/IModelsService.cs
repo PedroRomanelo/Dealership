@@ -1,9 +1,13 @@
-﻿namespace Dealership.Service.Interfaces;
+﻿using Dealership.Model.Response.modeL;
+using Dealership.Model.Request.Model;
+
+namespace Dealership.Service.Interfaces;
 
 public interface IModelsService
 {
-    //Task() SearchAsync(string brand, string model);
-    //Task() CreateAsync(CreateModelRequest request);
-    //Task() UpdateAsync(int id, UpdateModelRequest request);
-    //Task() DeactivateAsync(int id);
+    Task<ModelResponseVM> CreateAsync(ModelRegisterVM request);
+    Task<ModelResponseVM> UpdateAsync(int id, ModelUpdate request);
+    Task<IEnumerable<ModelResponseVM>> GetByModelAsync(string modelName);
+    Task<IEnumerable<ModelResponseVM>> GetByBrandAsync(string Brand);
+    Task<bool> DeactivateAsync(int id);
 }

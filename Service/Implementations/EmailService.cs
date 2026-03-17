@@ -24,7 +24,7 @@ public class EmailService:IEmailService
         var senderName = _configuration["Brevo:SenderName"];
 
         _httpClient.DefaultRequestHeaders.Clear();
-        _httpClient.DefaultRequestHeaders.Add("app-key", apiKey);
+        _httpClient.DefaultRequestHeaders.Add("api-key", apiKey);
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
         var payload = new

@@ -4,7 +4,7 @@ using Dealership.Repository.Interfaces;
 
 namespace Dealership.Repository.Implementations;
 
-public class UserAdminRepository(string connectionString): BaseRepository(connectionString), IAdminUserRepository
+public class AdminUserRepository(string connectionString): BaseRepository(connectionString), IAdminUserRepository
 {
     public async Task<int> CreateAsync(AdminUsers adminUsers)
     {

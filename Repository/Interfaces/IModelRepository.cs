@@ -6,8 +6,8 @@ public interface IModelRepository
 {
     Task<int> CreateAsync(Models model);
     Task<bool> UpdateAsync(Models model);
-    Task<bool> DeactivateAsync(int ModelId );
-    Task<bool> ReactivateAsync(int ModelId);
-    Task<IEnumerable<Models>> GetByModelAsync(int Id);
-    Task<IEnumerable<Models>> GetByBrandAsync(int Id);
+    Task<bool> DeactivateAsync(int Id );
+    Task<bool> ReactivateAsync(int Id);
+    Task<IEnumerable<Models>> GetByModelAsync(string modelName);
+    Task<IEnumerable<Models>> GetByBrandAsync(string modelName);
 }

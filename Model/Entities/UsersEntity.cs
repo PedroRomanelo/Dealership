@@ -6,6 +6,6 @@ public class Users
     public string Document { get; set; }
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
-    public DateOnly BirthDate { get; set; }
+    public DateTime BirthDate { get; set; }
     public bool Status { get; set; }
 }

@@ -10,9 +10,9 @@ public class PaymentMethodRepository(string connectionString) : BaseRepository(c
         using var db = CreateConnection();
 
         string sql = @"
-        INSERT INTO PaymentMethod ( Description, Status, Name)
-        VALUES (@Description, @Status, @Name)
-        SELECT CAST(scope_identity as int);";
+        INSERT INTO PaymentMethod ( Description, Name)
+        VALUES (@Description, @Name)
+        SELECT CAST(SCOPE_IDENTITY() as int);";
 
         return await db.ExecuteScalarAsync<int>(sql, paymentMethod);
     }
@@ -23,7 +23,7 @@ public class PaymentMethodRepository(string connectionString) : BaseRepository(c
 
         string sql = @"
         UPDATE PaymentMethod
-        SET Description = @Description, Status = @Status, Name = @Name;
+        SET Description = @Description, Status = @Status, Name = @Name
         WHERE Id = @Id
         ";
 
@@ -40,7 +40,7 @@ public class PaymentMethodRepository(string connectionString) : BaseRepository(c
         SET Status = 0 
         WHERE Id = @Id";
 
-        int rowsAffected = await db.ExecuteAsync(sql, Id);
+        int rowsAffected = await db.ExecuteAsync(sql, new { Id = Id });
         return rowsAffected > 0;
     }
 
@@ -63,6 +63,6 @@ public class PaymentMethodRepository(string connectionString) : BaseRepository(c
 
         string sql = @" SELECT * FROM PaymentMethod ";
 
-        return await db.QueryFirstOrDefaultAsync(sql);
+        return await db.QueryAsync<PaymentMethod>(sql);
     }
 }

@@ -17,6 +17,34 @@ public class PasswordRecoveryTokenService : IPasswordRecoveryTokenService
         _configuration = configuration;
     }
 
+    public bool ValidateRecoveryToken(string token)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.ASCII.GetBytes(_configuration["JwtSettings:SecretKey"]!);
+        var jwtSettings = _configuration.GetSection("JwtSettings");
+
+        try
+        {
+            tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = true,
+                ValidIssuer = jwtSettings["Issuer"],
+                ValidateAudience = true,
+                ValidAudience = jwtSettings["Audience"],
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            }, out SecurityToken validatedToken);
+
+            return true;
+        }
+        catch
+        {
+            return false; //Token inválido, expirado ou assinado incorretamente
+        }
+    }
+
     public string GenerateRecoveryToken (AdminUsers admin)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
