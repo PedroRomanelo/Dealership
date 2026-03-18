@@ -3,7 +3,7 @@ using Dealership.Model.Request.User;
 using Dealership.Model.Response.User;
 using Dealership.Repository.Implementations;
 using Dealership.Repository.Interfaces;
-using Dealership.Service.Interfaces;
+using Dealership.Service.Interfaces; 
 
 namespace Dealership.Service.Implementations;
 
@@ -64,6 +64,21 @@ public class UserService : IUserService
 
     public async Task<UserResponseVM> UpdateAsync(int id, UserUpdateVM request)
     {
+        var existingUser = await _userRepository.GetByIdAsync(id);
+        if (existingUser == null) throw new Exception("Usuário não encontrado.");
+
+        var userWithDoc = await _userRepository.GetByDocumentAsync(request.Document);
+        if (userWithDoc != null && userWithDoc.Id != id)
+        {
+            throw new Exception("Documento já utilizado por outro usuário.");
+        }
+
+        var userWithEmail = await _userRepository.GetByEmailAsync(request.Email);
+        if (userWithEmail != null && userWithEmail.Id != id)
+        {
+            throw new Exception("Email já utilizado por outro usuário.");
+        }
+
         var updateUser = new Users
         {
             Id = id,
@@ -76,7 +91,7 @@ public class UserService : IUserService
 
         bool updated = await _userRepository.UpdateAsync(updateUser);
         if(!updated) {
-            throw new Exception("User não encontrado !");
+            throw new Exception("User não encontrado, tente outro documento !");
         }
 
         return MapToResponse(updateUser);

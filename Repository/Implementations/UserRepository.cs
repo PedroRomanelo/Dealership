@@ -75,6 +75,14 @@ public class UserRepository(string connectionString ):BaseRepository(connectionS
         return await db.QueryFirstOrDefaultAsync<Users>(sql, new { Email = email });
     }
 
+    public async Task<Users?> GetByIdAsync(int id)
+    {
+        using var db = CreateConnection();
+
+        string sql = "SELECT * FROM Users WHERE Id = @Id";
+
+        return await db.QueryFirstOrDefaultAsync<Users>(sql, new { Id = id });
+    }
 
 }
 

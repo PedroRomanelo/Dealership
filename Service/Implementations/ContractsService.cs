@@ -1,75 +1,111 @@
 ﻿using Dealership.Model.Entities;
-using Dealership.Model.Request.contract;
-using Dealership.Model.Response.contract;
+using Dealership.Model.Request.Contract;
+using Dealership.Model.Response.Contract;
 using Dealership.Repository.Interfaces;
 using Dealership.Service.Interfaces;
 
 namespace Dealership.Service.Implementations;
 
-public class contractService : IContractService
+public class ContractsService : IContractsService
 {
     private readonly IContractRepository _contractRepository;
     private readonly IVehicleRepository _vehicleRepository;
     private readonly IInsuranceRepository _insuranceRepository;
-    // Adicione IUserRepository e IPaymentMethodRepository conforme necessário
+    private readonly IUserRepository _userRepository;
+    private readonly IPaymentMethodRepository _paymentMethodRepository;
 
-    public contractService(
+    public ContractsService(
         IContractRepository contractRepository,
         IVehicleRepository vehicleRepository,
-        IInsuranceRepository insuranceRepository)
+        IInsuranceRepository insuranceRepository,
+        IUserRepository userRepository,
+        IPaymentMethodRepository paymentMethodRepository)
     {
         _contractRepository = contractRepository;
         _vehicleRepository = vehicleRepository;
         _insuranceRepository = insuranceRepository;
+        _userRepository = userRepository;
+        _paymentMethodRepository = paymentMethodRepository;
     }
 
-    public async Task<ContractSimulationVM> SimulateContractAsync(ContractRequestVM request)
+    public async Task<ContractResponseVM> ViewContractAsync(ContractRequestVM request)
     {
-        // 1. Busca os dados necessários (Simulação de busca real)
-        // var vehicle = await _vehicleRepository.GetByIdAsync(request.VehicleId);
-        // var insurances = await _insuranceRepository.GetByModelAsync(vehicle.ModelId);
+        var user = await _userRepository.GetByIdAsync(request.UserId)
+            ?? throw new Exception("Usuário não encontrado.");
 
-        // Exemplo simplificado de cálculo:
-        int totalDays = (int)Math.Ceiling((request.EndDate - request.StartDate).TotalDays);
-        if (totalDays <= 0) totalDays = 1;
+        var paymentMethod = await _paymentMethodRepository.GetByIdAsync(request.PaymentMethodId)
+            ?? throw new Exception("Meio de pagamento não encontrado.");
 
-        decimal vehicleDailyRate = 150.00m; // Substituir por vehicle.DailyRate
-        decimal insuranceDailyRate = request.UseInsurance ? 85.50m : 0m; // Substituir pela busca real
+        var vehicle = await _vehicleRepository.GetByIdAsync(request.VehicleId)
+            ?? throw new Exception("Veículo não encontrado.");
 
-        decimal vehicleCost = totalDays * vehicleDailyRate;
-        decimal insuranceCost = totalDays * insuranceDailyRate;
+        decimal insuranceRate = 0;
 
-        return new ContractSimulationVM
+
+        if (request.InsuranceId > 0)
         {
-            CustomerName = "Nome do Cliente Buscado", // Substituir por user.Name
-            VehiclePlate = "ABC-1234", // Substituir por vehicle.LicensePlate
-            PaymentMethod = "Cartão", // Substituir por payment.Name
-            TotalDays = totalDays,
-            VehicleCost = vehicleCost,
-            InsuranceCost = insuranceCost,
-            GrandTotal = vehicleCost + insuranceCost
+            var insurance = await _insuranceRepository.GetByIdAsync(request.InsuranceId)
+                ?? throw new Exception("Seguro não encontrado.");
+
+            insuranceRate = insurance.DailyRate;
+        }
+
+        int days = (request.ContractEndDate - request.ContractStartDate).Days;
+        days = days > 0 ? days : 1;
+
+        decimal totalPrice = (vehicle.DailyRate + insuranceRate) * days;
+
+        return new ContractResponseVM
+        {
+            UserId = request.UserId,
+            VehicleId = request.VehicleId,
+            ContractStartDate = request.ContractStartDate,
+            ContractEndDate = request.ContractEndDate,
+            InsuranceId = request.InsuranceId,
+            PaymentMethodId = request.PaymentMethodId,
+            TotalPrice = totalPrice
         };
     }
 
     public async Task<int> CreateContractAsync(ContractRequestVM request)
     {
-        // 1. Gera a simulação para obter os valores corretos
-        var simulation = await SimulateContractAsync(request);
+        var user = await _userRepository.GetByIdAsync(request.UserId)
+            ?? throw new Exception("Usuário não encontrado.");
 
-        // 2. Monta a entidade para salvar no banco
-        var contract = new contract // Entidade a ser criada no Model.Entities
+        var paymentMethod = await _paymentMethodRepository.GetByIdAsync(request.PaymentMethodId)
+            ?? throw new Exception("Meio de pagamento não encontrado.");
+
+        var vehicle = await _vehicleRepository.GetByIdAsync(request.VehicleId)
+            ?? throw new Exception("Veículo não encontrado.");
+
+        decimal insuranceRate = 0;
+
+        if (request.InsuranceId > 0)
         {
+            var insurance = await _insuranceRepository.GetByIdAsync(request.InsuranceId)
+                ?? throw new Exception("Seguro não encontrado.");
+
+            insuranceRate = insurance.DailyRate;
+        }
+
+        int days = (request.ContractEndDate - request.ContractStartDate).Days;
+        days = days > 0 ? days : 1;
+
+        decimal totalPrice = (vehicle.DailyRate + insuranceRate) * days;
+
+        var contract = new Contracts
+        {
+            ContractNumber = Guid.NewGuid().ToString("N").ToUpper(),
             UserId = request.UserId,
             VehicleId = request.VehicleId,
-            PaymentMethodId = request.PaymentMethodId,
-            StartDate = request.StartDate,
-            EndDate = request.EndDate,
-            UseInsurance = request.UseInsurance,
-            TotalValue = simulation.GrandTotal,
-            Status = 1 // Ativo
+            ContractDate = DateTime.UtcNow,
+            ContractStartDate = request.ContractStartDate,
+            ContractEndDate = request.ContractEndDate,
+            InsuranceId = request.InsuranceId,
+            TotalPrice = totalPrice,
+            PaymentMethodId = request.PaymentMethodId
         };
 
-        // 3. Salva e retorna o ID
-        return await _contractRepository.CreateAsync(contract);
+        return await _contractRepository.InsertAsync(contract);
     }
 }

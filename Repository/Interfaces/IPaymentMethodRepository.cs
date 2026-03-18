@@ -9,4 +9,5 @@ public interface IPaymentMethodRepository
     Task<bool> DeactivateAsync(int id);
     Task<bool> ReactivateAsync(int id);
     Task<IEnumerable<PaymentMethod>> GetAllAsync();
+    Task<PaymentMethod?> GetByIdAsync(int id);
 }

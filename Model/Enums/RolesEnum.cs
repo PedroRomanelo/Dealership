@@ -1,8 +1,15 @@
-﻿namespace Dealership.Model.Enums;
+﻿using System.ComponentModel;
+
+namespace Dealership.Model.Enums;
 
 public enum RolesEnum
 {
+    [Description("Administrador")]
     Admin = 0,
-    Suporte = 1,
-    Financeiro = 2,
+
+    [Description("Suporte")]
+    Support = 1,
+
+    [Description("Financeiro")]
+    Financial = 2,
 }

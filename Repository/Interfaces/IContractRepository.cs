@@ -1,11 +1,7 @@
-﻿
-using Dealership.Model.Entities;
-
-namespace Dealership.Repository.Interfaces;
+﻿using Dealership.Model.Entities;
+using Dealership.Model.Request;
 
 public interface IContractRepository
 {
     Task<int> InsertAsync(Contracts contract);
-    Task<IEnumerable<Contracts>> GetAllAsync(); //retorna a coleção da tab. contracts
 }
-

@@ -64,6 +64,13 @@ builder.Services.AddScoped<IInsuranceService, InsuranceService>();
 builder.Services.AddScoped<IVehicleRepository>(p => new VehicleRepository(connectionString!));
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 
+builder.Services.AddScoped<IContractRepository>(p => new ContractRepository(connectionString!));
+builder.Services.AddScoped<IContractsService, ContractsService>();
+
+builder.Services.AddScoped<IReportRepository>(p => new ReportRepository(connectionString!));
+builder.Services.AddScoped<IReportService, ReportService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

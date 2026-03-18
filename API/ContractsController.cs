@@ -1,35 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Dealership.Model.Request.contract;
+﻿using Dealership.Model.Request.Contract;
 using Dealership.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Dealership.API.Controllers;
+namespace Dealership.Api.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("api/[controller]")]
-public class contractController : ControllerBase
+[Route("api/contracts")]
+public class ContractController(IContractsService contractsService) : ControllerBase
 {
-    private readonly IContractService _contractService;
-
-    public contractController(IContractService contractService)
+    [HttpPost("preview")]
+    public async Task<IActionResult> SimulateContract([FromBody] ContractRequestVM request)
     {
-        _contractService = contractService;
+        try
+        {
+            var simulation = await contractsService.ViewContractAsync(request);
+            return Ok(simulation);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 
-    // 4.7 - Apenas visualização/simulação (Não salva no banco)
-    [HttpPost("simulate")]
-    public async Task<IActionResult> SimulateAsync([FromBody] ContractRequestVM request)
-    {
-        var simulation = await _contractService.SimulateContractAsync(request);
-        return Ok(simulation);
-    }
-
-    // 4.7.1 - Criação efetiva do contrato
     [HttpPost]
-    public async Task<IActionResult> CreateAsync([FromBody] ContractRequestVM request)
+    public async Task<IActionResult> CreateContract([FromBody] ContractRequestVM request)
     {
-        var contractId = await _contractService.CreateContractAsync(request);
-        return Created(string.Empty, new { ContractId = contractId, Message = "Contrato gerado com sucesso." });
+        try
+        {
+            var contractId = await contractsService.CreateContractAsync(request);
+            // Retorna 201 Created apontando para o recurso gerado (caso tenha um endpoint de GET no futuro)
+            return CreatedAtAction(nameof(CreateContract), new { id = contractId }, new { ContractId = contractId });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 }

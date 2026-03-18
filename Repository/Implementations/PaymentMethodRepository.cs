@@ -65,4 +65,12 @@ public class PaymentMethodRepository(string connectionString) : BaseRepository(c
 
         return await db.QueryAsync<PaymentMethod>(sql);
     }
+    public async Task<PaymentMethod?> GetByIdAsync(int id)
+    {
+        using var db = CreateConnection();
+
+        string sql = @" SELECT * FROM PaymentMethod WHERE Id = @Id";
+
+        return await db.QueryFirstOrDefaultAsync<PaymentMethod>(sql, new {Id = id});
+    }
 }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dealership.API;
-
+ 
 [ApiController]
 [Authorize]
 [Route("api/[controller]")]
@@ -44,7 +44,6 @@ public class UserController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] UserRegisterVM request)
     {
-        //verificar se user já existe ?
         try
         {
             var response = await _userService.CreateAsync(request);
@@ -59,7 +58,6 @@ public class UserController : ControllerBase
     [HttpPatch("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] UserUpdateVM request)
     {
-        //verificar se user e/ou id já existem ?
         try
         {
             var response = await _userService.UpdateAsync(id, request);
@@ -74,10 +72,14 @@ public class UserController : ControllerBase
     [HttpPatch("{id}/deactivate")]
     public async Task<IActionResult> DeactivateAsync(int id)
     {
-        var success = await _userService.DeactivateAsync(id);
-
-        if (!success) return BadRequest(new { message = "Falha ao desativar o usuário. Verifique se o ID existe." });
-
-        return NoContent(); // 204
+        try
+        {
+            await _userService.DeactivateAsync(id);
+            return NoContent(); //204
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { message = ex.Message });
+        }
     }
 }

@@ -1,11 +1,11 @@
-﻿namespace Dealership.Model.Request.Rental;
+﻿namespace Dealership.Model.Request.Contract;
 
 public class ContractRequestVM
 {
     public int UserId { get; set; }
-    public int VehicleId { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public bool UseInsurance { get; set; }
+    public DateTime ContractStartDate { get; set; }
+    public DateTime ContractEndDate { get; set; }
+    public int InsuranceId { get; set; } //ou bool para insuranceExist
     public int PaymentMethodId { get; set; }
+    public int VehicleId { get; set; }
 }

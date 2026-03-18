@@ -51,4 +51,5 @@ public class InsuranceService : IInsuranceService
             DailyRate = i.DailyRate
         });
     }
+
 }

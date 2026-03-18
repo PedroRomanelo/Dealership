@@ -11,4 +11,5 @@ public interface IVehicleRepository
     Task<bool> ReactivateAsync(int id);
     Task<IEnumerable<Vehicles>> GetByPlateAsync(string plate);
     Task<IEnumerable<Vehicles>> GetByModelAsync(int modelId);
+    Task<Vehicles?> GetByIdAsync(int id);
 }

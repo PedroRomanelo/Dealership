@@ -1,10 +1,12 @@
-﻿using Dealership.Model.Request.Rental;
-using Dealership.Model.Response.Rental;
+﻿using Dealership.Model.Response.Report;
 
 namespace Dealership.Service.Interfaces;
 
 public interface IReportService
 {
-    Task<ContractSimulationVM> SimulateContractAsync(ContractRequestVM request);
-    Task<int> CreateContractAsync(ContractRequestVM request);
+    Task<IEnumerable<MonthlyContractReportVM>> GetContractsByMonthAsync(int year);
+    Task<IEnumerable<BrandMonthlyReportVM>> GetContractsByMonthAndBrandAsync(int year);
+    Task<IEnumerable<PaymentMethodMonthlyReportVM>> GetContractsByMonthAndPaymentMethodAsync(int year);
+    Task<IEnumerable<CustomerSpendingVM>> GetCustomersTotalSpentAsync();
+    Task<IEnumerable<ActiveContractTimeVM>> GetActiveContractsWithRemainingTimeAsync();
 }

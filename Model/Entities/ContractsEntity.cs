@@ -4,10 +4,11 @@ public class Contracts
     public int Id { get; set; }
     public string ContractNumber { get; set; }
     public int UserId { get; set; }
-    public DateTime ContractData {  get; set; }
-    public DateTime ContractStartData { get; set; }
-    public DateTime ContractEndData { get; set; } 
-    public int Insurance { get; set; }
+    public DateTime ContractDate {  get; set; }
+    public DateTime ContractStartDate { get; set; }
+    public DateTime ContractEndDate{ get; set; } 
+    public int InsuranceId { get; set; }
     public decimal TotalPrice { get; set; }
-    public int PaymentMethod { get; set; }
+    public int PaymentMethodId { get; set; }
+    public int VehicleId { get; set; }
 }

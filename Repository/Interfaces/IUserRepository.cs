@@ -10,4 +10,5 @@ public interface IUserRepository
     Task<bool> ReactivateAsync(int Id);
     Task<Users?> GetByDocumentAsync(string document);
     Task<Users?> GetByEmailAsync(string email);
+    Task<Users?> GetByIdAsync(int id);
 }

@@ -30,7 +30,7 @@ public class TokenService: ITokenService
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, admin.Id.ToString()), //posteriormente caso nn tenha utilidade, retirar essa linha
-                new Claim(ClaimTypes.Role, admin.Role.ToString()),
+                new Claim(ClaimTypes.Role, admin.Role.ToString().ToLower()),
                 new Claim(ClaimTypes.Email, admin.Login)
             }),
             Audience = jwtSettings["Audience"],

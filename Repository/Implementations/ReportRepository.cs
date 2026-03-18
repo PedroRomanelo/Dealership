@@ -6,28 +6,27 @@ namespace Dealership.Repository.Implementations;
 
 public class ReportRepository(string connectionString) : BaseRepository(connectionString), IReportRepository
 {
-    public async Task<IEnumerable<MonthlyRentalReportVM>> GetRentalsByMonthAsync(int year)
+    public async Task<IEnumerable<MonthlyContractReportVM>> GetContractsByMonthAsync(int year)
     {
         using var db = CreateConnection();
         string sql = @"
-            SELECT MONTH(StartDate) as Month, COUNT(Id) as TotalRentals, SUM(TotalValue) as TotalValue
-            FROM Rentals
-            WHERE YEAR(StartDate) = @Year
-            GROUP BY MONTH(StartDate)";
-        return await db.QueryAsync<MonthlyRentalReportVM>(sql, new { Year = year });
+            SELECT MONTH(ContractStartDate) as Month, COUNT(Id) as TotalContracts, SUM(TotalPrice) as TotalPrice
+            FROM Contracts
+            WHERE YEAR(ContractStartDate) = @Year
+            GROUP BY MONTH(ContractStartDate)";
+        return await db.QueryAsync<MonthlyContractReportVM>(sql, new { Year = year });
     }
 
-    public async Task<IEnumerable<BrandMonthlyReportVM>> GetRentalsByMonthAndBrandAsync(int year)
+    public async Task<IEnumerable<BrandMonthlyReportVM>> GetContractsByMonthAndBrandAsync(int year)
     {
         using var db = CreateConnection();
         string sql = @"
-            SELECT B.Name as Brand, MONTH(R.StartDate) as Month, COUNT(R.Id) as TotalRentals, SUM(R.TotalValue) as TotalValue
-            FROM Rentals R
-            JOIN Vehicles V ON R.VehicleId = V.Id
-            JOIN Models M ON V.ModelId = M.Id
-            JOIN Brands B ON M.BrandId = B.Id
-            WHERE YEAR(R.StartDate) = @Year
-            GROUP BY B.Name, MONTH(R.StartDate)";
+            SELECT Models.Brand as Brand, MONTH(Contracts.ContractStartDate) as Month, COUNT(Contracts.Id) as TotalContracts, SUM(Contracts.TotalPrice) as TotalPrice
+            FROM Contracts
+            JOIN Vehicles ON Contracts.VehicleId = Vehicles.Id
+            JOIN Models ON Vehicles.ModelId = Models.Id
+            WHERE YEAR(Contracts.ContractStartDate) = @Year
+            GROUP BY Models.Brand, MONTH(Contracts.ContractStartDate)";
         return await db.QueryAsync<BrandMonthlyReportVM>(sql, new { Year = year });
     }
 
@@ -35,10 +34,10 @@ public class ReportRepository(string connectionString) : BaseRepository(connecti
     {
         using var db = CreateConnection();
         string sql = @"
-            SELECT U.Name as CustomerName, SUM(R.TotalValue) as TotalSpent
-            FROM Users U
-            JOIN Rentals R ON U.Id = R.UserId
-            GROUP BY U.Name
+            SELECT Users.Name as CustomerName, SUM(Contracts.TotalPrice) as TotalSpent
+            FROM Users
+            JOIN Contracts ON Users.Id = Contracts.UserId
+            GROUP BY Users.Name
             ORDER BY TotalSpent DESC";
         return await db.QueryAsync<CustomerSpendingVM>(sql);
     }
@@ -47,29 +46,29 @@ public class ReportRepository(string connectionString) : BaseRepository(connecti
     {
         using var db = CreateConnection();
         string sql = @"
-            SELECT R.Id as ContractId, U.Name as CustomerName, V.LicensePlate,
-            CAST(DATEDIFF(HOUR, GETDATE(), R.EndDate) / 24 AS VARCHAR) + ' dias e ' + 
-            CAST(DATEDIFF(HOUR, GETDATE(), R.EndDate) % 24 AS VARCHAR) + ' horas' as RemainingTime
-            FROM Rentals R
-            JOIN Users U ON R.UserId = U.Id
-            JOIN Vehicles V ON R.VehicleId = V.Id
-            WHERE R.EndDate > GETDATE() AND R.Status = 1";
+            SELECT Contracts.Id as ContractId, Users.Name as CustomerName, Vehicles.LicensePlate,
+            CAST(DATEDIFF(HOUR, GETDATE(), Contracts.ContractEndDate) / 24 AS VARCHAR) + ' dias e ' + 
+            CAST(DATEDIFF(HOUR, GETDATE(), Contracts.ContractEndDate) % 24 AS VARCHAR) + ' horas' as RemainingTime
+            FROM Contracts
+            JOIN Users ON Contracts.UserId = Users.Id
+            JOIN Vehicles ON Contracts.VehicleId = Vehicles.Id
+            WHERE GETDATE() BETWEEN Contracts.ContractStartDate AND Contracts.ContractEndDate";
         return await db.QueryAsync<ActiveContractTimeVM>(sql);
     }
 
-    public async Task<IEnumerable<PaymentMethodMonthlyReportVM>> GetRentalsByMonthAndPaymentMethodAsync(int year)
+    public async Task<IEnumerable<PaymentMethodMonthlyReportVM>> GetContractsByMonthAndPaymentMethodAsync(int year)
     {
         using var db = CreateConnection();
         string sql = @"
             SELECT 
                 PM.Name as PaymentMethod, 
-                MONTH(R.StartDate) as Month, 
-                COUNT(R.Id) as TotalRentals, 
-                SUM(R.TotalValue) as TotalValue
-            FROM Rentals R
-            JOIN PaymentMethod PM ON R.PaymentMethodId = PM.Id
-            WHERE YEAR(R.StartDate) = @Year
-            GROUP BY PM.Name, MONTH(R.StartDate)";
+                MONTH(Contracts.ContractStartDate) as Month, 
+                COUNT(Contracts.Id) as TotalContracts, 
+                SUM(Contracts.TotalPrice) as TotalPrice
+            FROM Contracts
+            JOIN PaymentMethod PM ON Contracts.PaymentMethodId = PM.Id
+            WHERE YEAR(Contracts.ContractStartDate) = @Year
+            GROUP BY PM.Name, MONTH(Contracts.ContractStartDate)";
 
         return await db.QueryAsync<PaymentMethodMonthlyReportVM>(sql, new { Year = year });
     }

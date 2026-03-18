@@ -41,4 +41,13 @@ public class InsuranceRepository(string connectionString) : BaseRepository(conne
 
         return await db.QueryAsync<Insurance>(sql, new { ModelId = modelId });
     }
+
+    public async Task<Insurance?> GetByIdAsync(int id)
+    {
+        using var db = CreateConnection();
+
+        string sql = "SELECT * FROM Insurances WHERE Id = @Id";
+
+        return await db.QueryFirstOrDefaultAsync<Insurance>(sql, new { Id = id });
+    }
 }

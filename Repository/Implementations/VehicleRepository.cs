@@ -76,4 +76,13 @@ namespace Dealership.Repository.Implementations;
 
         return await db.QueryAsync<Vehicles>(sql, new { ModelId = modelId });
     }
+
+    public async Task<Vehicles?> GetByIdAsync(int id)
+    {
+        using var db = CreateConnection();
+
+        const string sql = @"SELECT * FROM Vehicles WHERE Id = @Id";
+
+        return await db.QueryFirstOrDefaultAsync<Vehicles?>(sql, new { Id = id} );
+    }
 }
