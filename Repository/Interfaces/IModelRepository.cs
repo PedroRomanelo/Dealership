@@ -10,4 +10,5 @@ public interface IModelRepository
     Task<bool> ReactivateAsync(int Id);
     Task<IEnumerable<Models>> GetByModelAsync(string modelName);
     Task<IEnumerable<Models>> GetByBrandAsync(string modelName);
+    Task<Models> GetByIdAsync(int id);
 }

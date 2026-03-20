@@ -14,7 +14,7 @@ public class AddressService: IAddressService
         _addressRepository = addressRepository;
     }
 
-    public async Task<int> CreateAsync(AddressCreateRequest request) 
+    public async Task<int?> CreateAsync(AddressCreateRequest request) 
     {
         var address = new UserAddresses
         {
@@ -29,19 +29,26 @@ public class AddressService: IAddressService
         return await _addressRepository.CreateAsync(address);
     }
 
-    public async Task<bool> UpdateAsync(int id, AddressUpdateRequest request) 
+    public async Task<bool> UpdateAsync(int id, AddressUpdateRequestVM request) 
     {
-        var address = new UserAddresses
-        {
-            Id = id,
-            Street = request.Street,
-            Number = request.Number,
-            City = request.City,
-            State = request.State,
-            Status = true
-        };
+        var entity = await _addressRepository.GetByIdAsync(id);
 
-        return await _addressRepository.UpdateAsync(address);
+        if (entity == null)
+            throw new Exception("Endereço não localizado");
+
+        if (request.Street != null )
+            entity.Street = request.Street;
+
+        if (request.Number != null )
+            entity.Number = request.Number;
+
+        if (request.City != null )
+            entity.City = request.City;
+
+        if (request.State != null )
+            entity.State = request.State;
+
+        return await _addressRepository.UpdateAsync(entity);
     }
 
     public async Task<bool> DeactivateByUserIdAsync(int userId) 

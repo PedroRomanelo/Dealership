@@ -2,10 +2,10 @@
 
 public class AddressCreateRequest
 {
-    public int UserId { get; set; }
-    public string Street { get; set; } = string.Empty; //inicia com uma string vazia em vez de deixar null
+    public required int UserId { get; set; }
+    public required string Street { get; set; } //inicia com uma string vazia em vez de deixar null
     //evita nullReferenceException 
-    public string Number { get; set; } = string.Empty;
-    public string City { get; set; } = string.Empty;
-    public string State { get; set; } = string.Empty;
+    public required string Number { get; set; }
+    public required string City { get; set; }
+    public required string State { get; set; }
 }

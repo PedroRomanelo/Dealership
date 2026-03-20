@@ -5,17 +5,21 @@ using Dealership.Repository.Interfaces;
 namespace Dealership.Repository.Implementations;
 public class AddressRepository(string connectionString) : BaseRepository(connectionString), IAddressRepository
 {
-    public async Task<int> CreateAsync( UserAddresses address)
+    public async Task<int?> CreateAsync( UserAddresses address)
     {
-        using var db = CreateConnection();
-
         string sql = @"
             INSERT INTO UserAddresses (UserId, State, City, Street, Number)
-            VALUES (@UserId, @State, @City, @Street, @Number);
+            SELECT @UserId, @State, @City, @Street, @Number
+                WHERE NOT EXISTS(
+                    SELECT 1
+                    FROM UserAddresses
+                    WHERE UserId = @UserId
+                    AND Status = 1
+                );
 
             SELECT CAST(SCOPE_IDENTITY() as int);";
 
-        return await db.ExecuteScalarAsync<int>( sql, address);
+        return await _conn.ExecuteScalarAsync<int?>( sql, address);
     }
 
     public async Task<bool> UpdateAsync(UserAddresses address)
@@ -54,5 +58,13 @@ public class AddressRepository(string connectionString) : BaseRepository(connect
 
         int rowsAffected = await db.ExecuteAsync(sql, new { userId });
         return rowsAffected > 0;
+    }
+    public async Task<UserAddresses?> GetByIdAsync(int id)
+    {
+        using var db = CreateConnection();
+
+        string sql = "SELECT * FROM UserAddresses WHERE Id = @Id";
+
+        return await db.QueryFirstOrDefaultAsync<UserAddresses>(sql, new { Id = id });
     }
 }

@@ -2,7 +2,6 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using Dealership.Service.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace Dealership.Service.Implementations;

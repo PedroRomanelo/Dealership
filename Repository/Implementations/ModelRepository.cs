@@ -77,4 +77,13 @@ public class ModelRepository(string connectionString) : BaseRepository(connectio
 
         return await db.QueryAsync<Models>(sql, new { Brand = brandName });
     }
+
+    public async Task<Models?> GetByIdAsync(int id)
+    {
+        using var db = CreateConnection();
+
+        string sql = "SELECT * FROM UserAddresses WHERE Id = @Id";
+
+        return await db.QueryFirstOrDefaultAsync<Models>(sql, new { Id = id });
+    }
 }

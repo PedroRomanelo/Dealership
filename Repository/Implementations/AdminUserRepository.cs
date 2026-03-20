@@ -14,8 +14,8 @@ public class AdminUserRepository(string connectionString): BaseRepository(connec
         INSERT INTO AdminUsers (Login, Password, Role)
         VALUES (@Login, @Password, @Role);
 
-        SELECT CAST (scope_identity() as int);";
-
+        SELECT CAST (scope_identity() as int);"; //pega o ultimo id gerado no mesmo escopo(scope), evita pegar id errado em trigger
+        //
         return await db.ExecuteScalarAsync<int>(sql, adminUsers);
     }
 
@@ -29,7 +29,7 @@ public class AdminUserRepository(string connectionString): BaseRepository(connec
         WHERE Id = @Id";
 
         int rowsAffected = await db.ExecuteAsync(sql, new { Id = id, Password = newPassword });
-        return rowsAffected > 0;
+        return rowsAffected > 0; //retorna true quando afeta
     }
 
     public async Task<AdminUsers?> GetByLoginAsync(string login)

@@ -69,7 +69,7 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpPatch("{id}/deactivate")]
+    [HttpPatch("deactivate/{id}")]
     public async Task<IActionResult> DeactivateAsync(int id)
     {
         try

@@ -22,20 +22,26 @@ public class AddressController : ControllerBase
     {
         var id = await _addressService.CreateAsync(request);
 
+        if(id == null)
+        {
+            return Conflict(new { message = "Usuário já possui endereço ativo, use a rota deactivate para resolver o conflito" });
+        }
+
         return Created(string.Empty, new { id });
     }
 
     [HttpPatch("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromBody] AddressUpdateRequest request)
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] AddressUpdateRequestVM request)
     {
-        var success = await _addressService.UpdateAsync(id, request);
-
-        if(!success)
+        try
+        {
+            var success = await _addressService.UpdateAsync(id, request);
+            return Ok(new { message = "Endereço atualizado com sucesso" });
+        }
+        catch (Exception)
         {
             return BadRequest(new { message = "Ocorreu uma falha ao tentar atualizar" });
         }
-
-        return Ok(new { message = "Endereço atualizado com sucesso" });
     }
 
     [HttpPatch("deactivate/{userId}")]

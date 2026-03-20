@@ -26,7 +26,7 @@ public class ModelsController : ControllerBase
     }
 
     [HttpPatch("{id}")]
-    public async Task<IActionResult> UpdateAsync(int id, [FromBody] ModelUpdate request)
+    public async Task<IActionResult> UpdateAsync(int id, [FromBody] ModelUpdateVM request)
     {
         try
         {

@@ -7,7 +7,7 @@ using Dealership.Model.Response.Admin;
 using BCrypt.Net;
 
 namespace Dealership.Service.Implementations;
-
+ 
 public class AuthService : IAuthAdminService
 {
     private readonly IEmailService _emailService;
@@ -27,7 +27,7 @@ public class AuthService : IAuthAdminService
         _adminUserRepository = adminUserRepository;
     }
 
-    public async Task<AdminResponseVM> RegisterAsync(RegisterAdminVM request) 
+    public async Task<AdminResponseVM> RegisterAsync(AdminRegisterVM request) 
     {
         var userExist = await _adminUserRepository.GetByLoginAsync(request.Login);
 
@@ -55,14 +55,14 @@ public class AuthService : IAuthAdminService
             Token = tokenJwt,
         };
     }
-    public async Task<AdminResponseVM> LoginAsync(LoginAdminVM request)
+    public async Task<AdminResponseVM> LoginAsync(AdminLoginVM request)
     {
         var user = await _adminUserRepository.GetByLoginAsync(request.Login);
 
         if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
         {
             throw new Exception("Login ou senha inválidos");
-        }
+        } 
 
         string token = _tokenService.GenerateToken(user);
 
@@ -71,13 +71,13 @@ public class AuthService : IAuthAdminService
             Token = token
         };
     }
-    public async Task<bool> ForgotPasswordAsync(ForgotPasswordRequestVM request)
+    public async Task<bool> ForgotPasswordAsync(AdminForgotPasswordRequestVM request)
     {
         var user = await _adminUserRepository.GetByLoginAsync(request.Login);
 
         if (user == null)
         {
-            return true; //
+            return true;
         }
 
         string recoveryToken = _passwordRecoveryTokenService.GenerateRecoveryToken(user);
@@ -86,7 +86,7 @@ public class AuthService : IAuthAdminService
 
         return true;
     }
-    public async Task<bool> ResetPasswordAsync(ResetPasswordRequestVM request)
+    public async Task<bool> ResetPasswordAsync(AdminResetPasswordRequestVM request)
     {
         var user = await _adminUserRepository.GetByLoginAsync(request.Login);
 
@@ -95,7 +95,6 @@ public class AuthService : IAuthAdminService
             throw new Exception("Usuário não encontrado.");
         }
 
-        // Validação do token
         bool isTokenValid = _passwordRecoveryTokenService.ValidateRecoveryToken(request.Token);
         if (!isTokenValid)
         {

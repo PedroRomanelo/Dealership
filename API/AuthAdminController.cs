@@ -2,6 +2,7 @@
 using Dealership.Model.Request.Admin;
 using Dealership.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Dealership.Repository.Interfaces;
 
 namespace Dealership.API.Controllers;
 
@@ -17,7 +18,7 @@ public class AuthAdminController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> RegisterAsync([FromBody] RegisterAdminVM request)
+    public async Task<IActionResult> RegisterAsync([FromBody] AdminRegisterVM request)
     {
         try
         {
@@ -31,7 +32,7 @@ public class AuthAdminController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> LoginAsync([FromBody] LoginAdminVM request)
+    public async Task<IActionResult> LoginAsync([FromBody] AdminLoginVM request)
     {
         try
         {
@@ -45,7 +46,7 @@ public class AuthAdminController : ControllerBase
     }
 
     [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPasswordAsync([FromBody] ForgotPasswordRequestVM request)
+    public async Task<IActionResult> ForgotPasswordAsync([FromBody] AdminForgotPasswordRequestVM request)
     {
         try
         {
@@ -59,7 +60,7 @@ public class AuthAdminController : ControllerBase
     }
 
     [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordRequestVM request)
+    public async Task<IActionResult> ResetPasswordAsync([FromBody] AdminResetPasswordRequestVM request)
     {
         try
         {

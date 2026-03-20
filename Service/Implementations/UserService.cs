@@ -64,8 +64,9 @@ public class UserService : IUserService
 
     public async Task<UserResponseVM> UpdateAsync(int id, UserUpdateVM request)
     {
-        var existingUser = await _userRepository.GetByIdAsync(id);
-        if (existingUser == null) throw new Exception("Usuário não encontrado.");
+        var entity = await _userRepository.GetByIdAsync(id);
+        if (entity == null) 
+            throw new Exception("Usuário não encontrado.");
 
         var userWithDoc = await _userRepository.GetByDocumentAsync(request.Document);
         if (userWithDoc != null && userWithDoc.Id != id)
@@ -79,22 +80,28 @@ public class UserService : IUserService
             throw new Exception("Email já utilizado por outro usuário.");
         }
 
-        var updateUser = new Users
-        {
-            Id = id,
-            Name = request.Name,
-            Document = request.Document,
-            Email = request.Email,
-            PhoneNumber = request.PhoneNumber,
-            BirthDate = request.BirthDate,
-        };
+        if(request.Name != null)
+            entity.Name = request.Name;
 
-        bool updated = await _userRepository.UpdateAsync(updateUser);
+        if(request.Document != null)
+            entity.Document = request.Document;
+
+        if(request.Email != null)
+            entity.Email = request.Email;
+
+        if(request.PhoneNumber != null)
+            entity.PhoneNumber = request.PhoneNumber;
+
+        if(request.BirthDate != null)
+            entity.BirthDate = request.BirthDate;
+        
+
+        bool updated = await _userRepository.UpdateAsync(entity);
         if(!updated) {
             throw new Exception("User não encontrado, tente outro documento !");
         }
 
-        return MapToResponse(updateUser);
+        return MapToResponse(entity);
     }
     public async Task<bool> DeactivateAsync(int id)
     {

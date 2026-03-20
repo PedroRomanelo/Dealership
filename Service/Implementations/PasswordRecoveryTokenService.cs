@@ -37,11 +37,17 @@ public class PasswordRecoveryTokenService : IPasswordRecoveryTokenService
                 ClockSkew = TimeSpan.Zero
             }, out SecurityToken validatedToken);
 
+            var jwt = (JwtSecurityToken)validatedToken;
+            var tokenType = jwt.Claims.FirstOrDefault(c => c.Type == "token_type")?.Value;
+
+            if (tokenType != "password_recovery")
+                return false;
+
             return true;
         }
         catch
         {
-            return false; //Token inválido, expirado ou assinado incorretamente
+            return false;
         }
     }
 

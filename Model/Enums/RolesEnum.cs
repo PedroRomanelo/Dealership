@@ -11,5 +11,5 @@ public enum RolesEnum
     Support = 1,
 
     [Description("Financeiro")]
-    Financial = 2,
+    Financial = 2
 }

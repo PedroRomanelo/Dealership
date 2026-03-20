@@ -41,13 +41,15 @@ public class PaymentMethodService : IPaymentMethodService
 
     public async Task<bool> UpdateAsync(int id, PaymentMethodUpdateVM request)
     {
-        var entity = new PaymentMethod
-        {
-            Id = id,
-            Name = request.Name,
-            Description = request.Description,
-            Status = true
-        };
+        var entity = await _paymentMethodRepository.GetByIdAsync(id);
+        if (entity == null)
+            throw new Exception("Id não encontrado");
+
+        if (request.Description != null)
+            entity.Description = request.Description;
+
+        if (request.Name != null)
+            entity.Name = request.Name;
 
         return await _paymentMethodRepository.UpdateAsync(entity);
     }

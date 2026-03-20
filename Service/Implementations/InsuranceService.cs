@@ -29,13 +29,19 @@ public class InsuranceService : IInsuranceService
 
     public async Task<bool> UpdateAsync(int id, InsuranceUpdateVM request)
     {
-        var entity = new Insurance
-        {
-            Id = id,
-            Description = request.Description,
-            ModelId = request.ModelId,
-            DailyRate = request.DailyRate
-        };
+        var entity = await _insuranceRepository.GetByIdAsync(id);
+
+        if (entity == null)
+            throw new Exception("Seguro não encontrado.");
+        
+        if(request.Description != null)
+            entity.Description = request.Description;
+
+        if (request.ModelId.HasValue)
+            entity.ModelId = request.ModelId.Value;
+
+        if (request.DailyRate.HasValue)
+            entity.DailyRate = request.DailyRate.Value;
 
         return await _insuranceRepository.UpdateAsync(entity);
     }

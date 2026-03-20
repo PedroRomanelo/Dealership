@@ -13,7 +13,7 @@ public class UserRepository(string connectionString ):BaseRepository(connectionS
         string sql = @"
         INSERT INTO Users ( Name, Document, Email, PhoneNumber, BirthDate)
         VALUES (@Name, @Document, @Email, @PhoneNumber, @BirthDate);
-        SELECT CAST (SCOPE_IDENTITY() AS INT);";
+        SELECT CAST (SCOPE_IDENTITY() AS INT);"; //scope_identity retorna numeric, o cast faz converção para o INT
 
         return await db.ExecuteScalarAsync<int>(sql, user);
     }

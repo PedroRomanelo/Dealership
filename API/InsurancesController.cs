@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Dealership.API.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class InsuranceController : ControllerBase
@@ -17,6 +16,7 @@ public class InsuranceController : ControllerBase
         _insuranceService = insuranceService;
     }
 
+    [Authorize(Roles = "admin,financial")]
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] InsuranceCreateVM request)
     {
@@ -24,6 +24,7 @@ public class InsuranceController : ControllerBase
         return Created(string.Empty, new { id });
     }
 
+    [Authorize(Roles = "admin,financial")]
     [HttpPatch("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] InsuranceUpdateVM request)
     {
@@ -32,6 +33,7 @@ public class InsuranceController : ControllerBase
         return Ok(new { message = "Seguro atualizado !!" });
     }
 
+    [Authorize]
     [HttpGet("model/{modelId}")]
     public async Task<IActionResult> GetByModelIdAsync(int modelId)
     {

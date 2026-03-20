@@ -7,7 +7,7 @@ namespace Dealership.API.Controllers;
 
 [ApiController]
 [Route("reports")]
-[Authorize(Roles = "admin,financeiro")]
+[Authorize(Roles = "admin,financial")]
 public class ReportController(IReportService reportService) : ControllerBase
 {
     [HttpGet("monthly-contracts")]

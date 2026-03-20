@@ -30,14 +30,21 @@ public class VehicleService : IVehicleService
 
     public async Task<bool> UpdateAsync(int id, VehicleUpdateVM request)
     {
-        var entity = new Vehicles
-        {
-            Id = id,
-            LicensePlate = request.LicensePlate,
-            ModelId = request.ModelId,
-            Mileage = request.Mileage,
-            DailyRate = request.DailyRate
-        };
+        var entity = await _vehicleRepository.GetByIdAsync(id);
+        if (entity == null)
+            throw new Exception("O Id não foi encontrado.");
+
+        if(request.LicensePlate != null)
+            entity.LicensePlate = request.LicensePlate;
+
+        if (request.ModelId.HasValue)
+            entity.ModelId = request.ModelId.Value;
+
+        if(request.Mileage.HasValue)
+            entity.Mileage = request.Mileage.Value;
+
+        if(request.DailyRate.HasValue)
+            entity.DailyRate = request.DailyRate.Value;
 
         return await _vehicleRepository.UpdateAsync(entity) > 0;
     }

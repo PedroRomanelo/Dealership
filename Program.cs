@@ -1,7 +1,9 @@
+using Dealership.Extensions;
 using Dealership.Repository.Implementations;
 using Dealership.Repository.Interfaces;
 using Dealership.Service.Implementations;
 using Dealership.Service.Interfaces;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -39,6 +41,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddFluentValidationConfig();
+
 
 builder.Services.AddHttpClient<IEmailService, EmailService>();
 builder.Services.AddScoped<IAuthAdminService, AuthService>();

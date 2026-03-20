@@ -4,6 +4,7 @@ using Dealership.Model.Response.modeL;
 using Dealership.Repository.Implementations;
 using Dealership.Repository.Interfaces;
 using Dealership.Service.Interfaces;
+using static Dapper.SqlMapper;
 
 namespace Dealership.Service.Implementations;
 
@@ -29,20 +30,23 @@ public class ModelsService : IModelsService
         return MapToResponse(modelEntity);
     }
 
-    public async Task<ModelResponseVM> UpdateAsync(int id, ModelUpdate request)
+    public async Task<ModelResponseVM> UpdateAsync(int id, ModelUpdateVM request)
     {
-        var modelEntity = new Models
-        {
-            Id = id,
-            Model = request.Model,
-            Brand = request.Brand,
-            Status = true
-        };
+        var Entity = await _modelRepository.GetByIdAsync(id);
 
-        bool updated = await _modelRepository.UpdateAsync(modelEntity);
+        if (Entity == null)
+            throw new Exception("Modelo não encontrado.");
+
+        if ( request.Model != null)
+            Entity.Model = request.Model;
+        
+        if( request.Brand != null)
+            Entity.Brand = request.Brand;
+
+        bool updated = await _modelRepository.UpdateAsync(Entity);
         if (!updated) throw new Exception("Modelo não encontrado.");
 
-        return MapToResponse(modelEntity);
+        return MapToResponse(Entity);
     }
 
     public async Task<IEnumerable<ModelResponseVM>> GetByModelAsync(string modelName)
@@ -50,7 +54,7 @@ public class ModelsService : IModelsService
         var models = await _modelRepository.GetByModelAsync(modelName);
 
         return models.Select(m => MapToResponse(m));
-    }
+    } 
 
     public async Task<IEnumerable<ModelResponseVM>> GetByBrandAsync(string brand)
     {
