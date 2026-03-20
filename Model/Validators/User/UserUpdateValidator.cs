@@ -19,7 +19,7 @@ public class UserUpdateValidator :AbstractValidator<UserUpdateVM>
         { 
             RuleFor(x => x.Document)
                 .NotEmpty().WithMessage("O campo documento não deve estar vazio.")
-                .MaximumLength(100).WithMessage("O campo  deve ter no máximo 11 caracteres.")
+                .Length(11).WithMessage("O campo documento deve ter exatamente 11 caracteres")
                 .Matches(@"^\d+$").WithMessage("O campo documento deve receber apenas números");
         });
 
@@ -35,7 +35,7 @@ public class UserUpdateValidator :AbstractValidator<UserUpdateVM>
         { 
             RuleFor(x => x.PhoneNumber)
                 .NotEmpty().WithMessage("O campo número de telefone não deve estar vazio.")
-                .MaximumLength(11).WithMessage("O campo número de telefone deve ter no máximo 100 caracteres.")
+                .Length(11).WithMessage("O campo número de telefone deve ter exatamente 11 caracteres.")
                 .Matches(@"^\d+$").WithMessage("O campo número de telefone deve receber apenas");
         });
 
