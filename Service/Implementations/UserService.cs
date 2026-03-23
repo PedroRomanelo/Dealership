@@ -1,7 +1,6 @@
 ﻿using Dealership.Model.Entities;
 using Dealership.Model.Request.User;
 using Dealership.Model.Response.User;
-using Dealership.Repository.Implementations;
 using Dealership.Repository.Interfaces;
 using Dealership.Service.Interfaces; 
 

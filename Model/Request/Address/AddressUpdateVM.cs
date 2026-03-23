@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Dealership.Model.Request.Address;
+﻿namespace Dealership.Model.Request.Address;
 public class AddressUpdateRequestVM
 {
     public string? Street { get; set; }

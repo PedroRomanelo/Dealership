@@ -10,7 +10,6 @@ public class VehicleUpdateValidator : AbstractValidator<VehicleUpdateVM>
         When(x => !string.IsNullOrWhiteSpace(x.LicensePlate), () =>
         {
             RuleFor( x => x.LicensePlate)
-                .Transform(x => x?.ToUpper())
                 .Length(7).WithMessage("A placa do carro deve ter exatamente 7 caracateres.")
                 .Matches(@"^[A-Z0-9]{7}$").WithMessage("A placa só aceita números e letras maiúsculas.");
         });

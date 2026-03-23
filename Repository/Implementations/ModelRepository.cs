@@ -82,7 +82,7 @@ public class ModelRepository(string connectionString) : BaseRepository(connectio
     {
         using var db = CreateConnection();
 
-        string sql = "SELECT * FROM UserAddresses WHERE Id = @Id";
+        string sql = "SELECT * FROM Models WHERE Id = @Id";
 
         return await db.QueryFirstOrDefaultAsync<Models>(sql, new { Id = id });
     }

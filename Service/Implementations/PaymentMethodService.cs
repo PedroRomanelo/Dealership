@@ -1,7 +1,6 @@
 ﻿using Dealership.Model.Entities;
 using Dealership.Model.Request.PaymentMethod;
 using Dealership.Model.Response.PaymentMethod;
-using Dealership.Repository.Implementations;
 using Dealership.Repository.Interfaces;
 using Dealership.Service.Interfaces;
 

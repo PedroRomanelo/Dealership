@@ -24,7 +24,7 @@ public class InsuranceUpdateValidator : AbstractValidator<InsuranceUpdateVM>
         {
             RuleFor(x => x.DailyRate)
             .GreaterThan(0).WithMessage("Taxa diária deve ser maior que zero.")
-            .PrecisionScale(10, 2, true).WithMessage("Máximo 2 casas decimais.")
+            .PrecisionScale(10, 2, true).WithMessage("Máximo 2 casas decimais.");
         });
     }
 }

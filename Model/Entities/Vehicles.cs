@@ -3,8 +3,8 @@
 public class Vehicles
 {
     public int Id { get; set; }
-    public string LicensePlate { get; set; }
-    public int ModelId { get; set; }
-    public decimal Mileage { get; set; }
-    public decimal DailyRate { get; set; }
+    public required string LicensePlate { get; set; }
+    public required int ModelId { get; set; }
+    public required decimal Mileage { get; set; }
+    public required decimal DailyRate { get; set; }
 }

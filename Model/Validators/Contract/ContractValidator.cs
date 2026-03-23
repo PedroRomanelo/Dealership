@@ -7,7 +7,7 @@ public class ContractValidator : AbstractValidator<ContractRequestVM>
 {
     public ContractValidator() {
         RuleFor(x => x.UserId)
-            .GreaterThan(0).WithMessage("Campo Id do usuário é obrigatório.")
+            .GreaterThan(0).WithMessage("Campo Id do usuário é obrigatório.");
 
         RuleFor(x => x.ContractStartDate)
             .NotEmpty().WithMessage("Campo data de início do contrato é obrigatório.")

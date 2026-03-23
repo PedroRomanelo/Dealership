@@ -20,7 +20,8 @@ public class AdminResetPasswordValidator : AbstractValidator<AdminResetPasswordR
             .Matches(@"[a-z]").WithMessage("Deve ter ao menos uma letra minuscula.")
             .Matches(@"[A-Z]").WithMessage("Deve ter ao menos uma letra maiuscula.")
             .Matches(@"[0-9]").WithMessage("Deve ter ao menos um número.")
-            .Matches(@"[!@#$%^&*(),.?""{}|<>]").WithMessage("Deve ter ao menos um caractere especial.");
+            .Matches(@"[!@#$%^&*(),.?""{}|<>]").WithMessage("Deve ter ao menos um caractere especial.")
+            .Must(x => x == null || (x.Trim() == x && !x.Contains("  "))).WithMessage("Não são permitidos espaços no início, no fim ou espaços duplos. Refaça o campo nova senha."); ;
     }
 }
 

@@ -1,5 +1,4 @@
 ﻿using Dealership.Model.Request.Model;
-using Dealership.Service.Implementations;
 using Dealership.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

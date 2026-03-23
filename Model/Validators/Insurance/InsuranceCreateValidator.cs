@@ -6,7 +6,8 @@ public class InsuranceCreateValidator : AbstractValidator<InsuranceCreateVM>
 {
     public InsuranceCreateValidator() {
         RuleFor(x => x.Description)
-            .MaximumLength(500).WithMessage("O limite de caracteres é 500 caracteres.");
+            .MaximumLength(500).WithMessage("O limite de caracteres é 500 caracteres.")
+            .Must(x => x == null || (x.Trim() == x && !x.Contains("  "))).WithMessage("Não são permitidos espaços no início, no fim ou espaços duplos. Refaça o campo descrição."); ;
 
         RuleFor(x => x.ModelId)
             .GreaterThan(0).WithMessage("O campo ID do modelo é obrigatório.");

@@ -7,12 +7,12 @@ public class PaymentMethodCreateValidator : AbstractValidator<PaymentMethodCreat
 {
     public PaymentMethodCreateValidator() {
         RuleFor(x => x.Name)
-            .Transform(x => x?.Trim())
-            .NotEmpty().WithMessage("O campo nome é obrigatório.")
-            .MaximumLength(40).WithMessage("O campo nome deve ter no máximo 40 caracteres.");
+            .Must(x => !string.IsNullOrWhiteSpace(x)).WithMessage("O campo nome é obrigatório.")
+            .MaximumLength(40).WithMessage("O campo nome deve ter no máximo 40 caracteres.")
+            .Must(x => x == null || (x.Trim() == x && !x.Contains("  "))).WithMessage("Não são permitidos espaços no início, no fim ou espaços duplos. Refaça o campo nome."); ;
 
         RuleFor(x => x.Description)
-            .Transform(x => x?.Trim())
-            .MaximumLength(500).WithMessage("O campo descrição deve ter no máximo 500 caracteres.");
+            .MaximumLength(500).WithMessage("O campo descrição deve ter no máximo 500 caracteres.")
+            .Must(x => x == null || (x.Trim() == x && !x.Contains("  "))).WithMessage("Não são permitidos espaços no início, no fim ou espaços duplos. Refaça o campo descrição."); ;
     }
 }

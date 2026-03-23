@@ -2,9 +2,7 @@
 using Dealership.Model.Request.Admin;
 using Dealership.Repository.Interfaces;
 using Dealership.Service.Interfaces;
-using Microsoft.AspNetCore.Identity.Data;
 using Dealership.Model.Response.Admin;
-using BCrypt.Net;
 
 namespace Dealership.Service.Implementations;
  

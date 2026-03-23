@@ -1,7 +1,6 @@
 ﻿using Dealership.Model.Entities;
 using Dealership.Model.Request.Model;
 using Dealership.Model.Response.modeL;
-using Dealership.Repository.Implementations;
 using Dealership.Repository.Interfaces;
 using Dealership.Service.Interfaces;
 using static Dapper.SqlMapper;

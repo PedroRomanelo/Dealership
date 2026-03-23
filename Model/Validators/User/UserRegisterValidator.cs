@@ -10,7 +10,8 @@ public class UserRegisterValidator : AbstractValidator<UserRegisterVM>
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("O campo nome não deve estar vazio.")
             .MaximumLength(100).WithMessage("O campo nome deve ter no máximo 100 caracteres.")
-            .Matches(@"^[a-zA-ZÀ-ÿ\s]+$").WithMessage("O campo nome deve receber apenas letras.");
+            .Matches(@"^[a-zA-ZÀ-ÿ\s]+$").WithMessage("O campo nome deve receber apenas letras.")
+            .Must(x => x == null || (x.Trim() == x && !x.Contains("  "))).WithMessage("Não são permitidos espaços no início, no fim ou espaços duplos. Refaça o campo nome."); ;
 
         RuleFor(x => x.Document)
             .NotEmpty().WithMessage("O campo documento não deve estar vazio.")
@@ -23,10 +24,12 @@ public class UserRegisterValidator : AbstractValidator<UserRegisterVM>
             .EmailAddress().WithMessage("O campo deve ter o formato de email.");
 
         RuleFor(x => x.PhoneNumber)
-            .Length(11).WithMessage("O campo número de telefone deve ter no exatamente 11 caracteres (com DDD). Números fixos não aceitos.")
-            .Matches(@"^[0-9]{11}$").WithMessage("O campo número de telefone deve receber apenas");
+            .Must(x => !string.IsNullOrWhiteSpace(x)).WithMessage("O telefone não pode ser vazio ou conter apenas espaços.")
+            .Matches(@"^[0-9]{11}$").WithMessage("O telefone deve conter exatamente 11 números (com DDD).")
+            .When(x => x.PhoneNumber != null);
 
         RuleFor(x => x.BirthDate)
-            .Must(date => date < DateTime.Now).WithMessage("A data deve ser anterior a data de hoje");
+            .Must(date => date < DateTime.Now).WithMessage("A data deve ser anterior a data de hoje")
+            .When(x => x.BirthDate.HasValue);
     }
 }

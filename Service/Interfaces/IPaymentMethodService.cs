@@ -1,5 +1,4 @@
-﻿using Dealership.Model.Entities;
-using Dealership.Model.Request.PaymentMethod;
+﻿using Dealership.Model.Request.PaymentMethod;
 using Dealership.Model.Response.PaymentMethod;
 
 namespace Dealership.Service.Interfaces;

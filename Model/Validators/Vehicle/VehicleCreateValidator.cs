@@ -8,8 +8,7 @@ public class VehicleCreateValidator : AbstractValidator<VehicleCreateVM>
     public VehicleCreateValidator()
     {
         RuleFor(x => x.LicensePlate)
-            .Transform(x => x?.ToUpper())
-            .NotEmpty().WithMessage("O campo de placa não deve estar vazio.")
+            .Must(x => !string.IsNullOrWhiteSpace(x)).WithMessage("O campo de placa não deve estar vazio.")
             .Length(7).WithMessage("O campo de placa deve ter exatamente 7 caracteres.")
             .Matches(@"^[A-Z0-9]{7}$").WithMessage("O campo da placa só aceita números e letras maiúsculas.");
 

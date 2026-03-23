@@ -11,7 +11,8 @@ public class UserUpdateValidator :AbstractValidator<UserUpdateVM>
         { 
             RuleFor(x => x.Name)
                 .MaximumLength(100).WithMessage("O campo  deve ter no máximo 100 caracteres.")
-                .Matches(@"^[a-zA-ZÀ-ÿ\s]+$").WithMessage("O campo nome deve receber apenas letras.");
+                .Matches(@"^[a-zA-ZÀ-ÿ\s]+$").WithMessage("O campo nome deve receber apenas letras.")
+                .Must(x => x == null || (x.Trim() == x && !x.Contains("  "))).WithMessage("Não são permitidos espaços no início, no fim ou espaços duplos. Refaça o campo nome."); ;
         });
 
         When(x => !string.IsNullOrWhiteSpace(x.Document), () => 

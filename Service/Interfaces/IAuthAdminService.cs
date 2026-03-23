@@ -1,6 +1,5 @@
 ﻿using Dealership.Model.Request.Admin;
 using Dealership.Model.Response.Admin;
-using Microsoft.AspNetCore.Identity.Data;
 
 namespace Dealership.Service.Interfaces;
 

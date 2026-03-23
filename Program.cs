@@ -3,7 +3,6 @@ using Dealership.Repository.Implementations;
 using Dealership.Repository.Interfaces;
 using Dealership.Service.Implementations;
 using Dealership.Service.Interfaces;
-using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
