@@ -17,6 +17,9 @@ public class InsuranceService : IInsuranceService
 
     public async Task<int> CreateAsync(InsuranceCreateVM request)
     {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
         var entity = new Insurance
         {
             Description = request.Description,
@@ -48,6 +51,9 @@ public class InsuranceService : IInsuranceService
 
     public async Task<IEnumerable<InsuranceResponseVM>> GetByModelIdAsync(int modelId)
     {
+        if (modelId <= 0)
+            throw new ArgumentException("ModelId inválido.", nameof(modelId));
+
         var insurances = await _insuranceRepository.GetByModelAsync(modelId);
 
         return insurances.Select(i => new InsuranceResponseVM

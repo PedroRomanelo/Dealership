@@ -7,23 +7,24 @@ public class ContractValidator : AbstractValidator<ContractRequestVM>
 {
     public ContractValidator() {
         RuleFor(x => x.UserId)
-            .NotEmpty().WithMessage("Campo Id do usuário é obrigatório");
+            .GreaterThan(0).WithMessage("Campo Id do usuário é obrigatório.")
 
         RuleFor(x => x.ContractStartDate)
-            .NotEmpty().WithMessage("Campo data de inicio do contrato é obrigatório")
-            .GreaterThan(DateTime.Now).WithMessage("Data deve ser futura");
+            .NotEmpty().WithMessage("Campo data de início do contrato é obrigatório.")
+            .Must(date => date > DateTime.Now).WithMessage("Data deve ser futura.");
 
         RuleFor(x => x.ContractEndDate)
-            .NotEmpty().WithMessage("Campo data final do contrato é obrigatório")
-            .GreaterThan(x => x.ContractStartDate).WithMessage("Data de fim deve ser maior que a data de inicio");
-        
+            .NotEmpty().WithMessage("Campo data final do contrato é obrigatório.")
+            .GreaterThan(x => x.ContractStartDate).WithMessage("Data de fim deve ser maior que a data de início.");
+
         RuleFor(x => x.InsuranceId)
-            .NotNull().WithMessage("Campo Id do seguro não pode ser nulo.");
-        
+            .GreaterThan(0).WithMessage("Campo Id do seguro inválido.")
+    .       When(x => x.InsuranceId.HasValue);
+
         RuleFor(x => x.PaymentMethodId)
-            .NotEmpty().WithMessage("Campo Id do método de pagamento é obrigatório");
+            .GreaterThan(0).WithMessage("Campo Id do método de pagamento é obrigatório");
         
         RuleFor(x => x.VehicleId)
-            .NotEmpty().WithMessage("Campo Id do veiculo é obrigatório");
+            .GreaterThan(0).WithMessage("Campo Id do veiculo é obrigatório");
     }
 }

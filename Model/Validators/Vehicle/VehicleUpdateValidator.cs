@@ -7,11 +7,12 @@ public class VehicleUpdateValidator : AbstractValidator<VehicleUpdateVM>
 {
     public VehicleUpdateValidator()
     {
-        When(x => !string.IsNullOrEmpty(x.LicensePlate), () =>
+        When(x => !string.IsNullOrWhiteSpace(x.LicensePlate), () =>
         {
             RuleFor( x => x.LicensePlate)
+                .Transform(x => x?.ToUpper())
                 .Length(7).WithMessage("A placa do carro deve ter exatamente 7 caracateres.")
-                .Matches(@"[A-Z0-9]+$").WithMessage("A placa só aceita números e letras maiúsculas.");
+                .Matches(@"^[A-Z0-9]{7}$").WithMessage("A placa só aceita números e letras maiúsculas.");
         });
 
         When(x => x.ModelId.HasValue, () =>
@@ -23,15 +24,15 @@ public class VehicleUpdateValidator : AbstractValidator<VehicleUpdateVM>
         When(x => x.Mileage.HasValue, () =>
         {
             RuleFor(x => x.Mileage)
-                .PrecisionScale(2, 10, true).WithMessage("Máximo 2 casas decimais").WithMessage("Taxa diária deve ser decimal");
-            //tentar negativo
+                .GreaterThanOrEqualTo(0).WithMessage("Quilometragem não pode ser negativa.")
+                .PrecisionScale(10, 2, true).WithMessage("Máximo 2 casas decimais");
         });
 
         When(x => x.DailyRate.HasValue, () =>
         {
             RuleFor(x => x.DailyRate)
-                .PrecisionScale(2, 10, true).WithMessage("Máximo 2 casas decimais").WithMessage("Taxa diária deve ser decimal");
-            //tentar negativo
+                .GreaterThan(0).WithMessage("Taxa diária deve ser maior que zero.")
+                .PrecisionScale(10, 2, true).WithMessage("Máximo 2 casas decimais");
         });
             
     }

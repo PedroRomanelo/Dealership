@@ -13,6 +13,6 @@ public class ModelRegisterValidator : AbstractValidator<ModelRegisterVM>
 
         RuleFor(x => x.Brand)
             .NotEmpty().WithMessage("O campo marca é obrigatório.")
-            .MinimumLength(100).WithMessage("O campo marca deve ter no máximo 100 caracteres.");
+            .MaximumLength(100).WithMessage("O campo marca deve ter no máximo 100 caracteres.");
     }
 }

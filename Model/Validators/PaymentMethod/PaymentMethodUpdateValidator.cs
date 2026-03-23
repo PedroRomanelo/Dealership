@@ -8,16 +8,15 @@ public class PaymentMethodUpdateValidator : AbstractValidator<PaymentMethodUpdat
 {
     public PaymentMethodUpdateValidator() 
     {
-        When(x => !string.IsNullOrEmpty(x.Description), () =>
+        When(x => !string.IsNullOrWhiteSpace(x.Description), () =>
         {
             RuleFor(x => x.Description)
             .MaximumLength(500).WithMessage("O campo de descrição deve ter no máximo 500 caracteres.");
         });
 
-        When(x => !string.IsNullOrEmpty(x.Name), () => {
+        When(x => !string.IsNullOrWhiteSpace(x.Name), () => {
             RuleFor(x => x.Name)
-            .MaximumLength(40).WithMessage("O campo de nome deve ter no máximo 40 caracteres.")
-            .NotEmpty().WithMessage("O campo nome não pode ser enviado vazio.");
+            .MaximumLength(40).WithMessage("O campo de nome deve ter no máximo 40 caracteres.");
         });
             
     }

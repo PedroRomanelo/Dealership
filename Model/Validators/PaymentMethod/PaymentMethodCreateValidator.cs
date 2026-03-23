@@ -7,10 +7,12 @@ public class PaymentMethodCreateValidator : AbstractValidator<PaymentMethodCreat
 {
     public PaymentMethodCreateValidator() {
         RuleFor(x => x.Name)
+            .Transform(x => x?.Trim())
             .NotEmpty().WithMessage("O campo nome é obrigatório.")
             .MaximumLength(40).WithMessage("O campo nome deve ter no máximo 40 caracteres.");
 
         RuleFor(x => x.Description)
+            .Transform(x => x?.Trim())
             .MaximumLength(500).WithMessage("O campo descrição deve ter no máximo 500 caracteres.");
     }
 }
