@@ -54,10 +54,10 @@ public class VehicleService : IVehicleService
         return await _vehicleRepository.DeactivateAsync(id);
     }
 
-    public async Task<IEnumerable<VehicleResponseVM>> GetByPlateAsync(string plate)
+    public async Task<VehicleResponseVM> GetByPlateAsync(string plate)
     {
-        var vehicles = await _vehicleRepository.GetByPlateAsync(plate);
-        return MapToResponse(vehicles);
+        var vehicle = await _vehicleRepository.GetByPlateAsync(plate);
+        return vehicle == null ? null : MapToResponse(vehicle);
     }
 
     public async Task<IEnumerable<VehicleResponseVM>> GetByModelIdAsync(int modelId)
@@ -75,5 +75,16 @@ public class VehicleService : IVehicleService
             Mileage = v.Mileage,
             DailyRate = v.DailyRate
         });
+    }
+
+    private VehicleResponseVM MapToResponse(Vehicles v)
+    {
+        return new VehicleResponseVM
+        {
+            LicensePlate = v.LicensePlate,
+            ModelId = v.ModelId,
+            Mileage = v.Mileage,
+            DailyRate = v.DailyRate
+        };
     }
 }

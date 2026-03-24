@@ -8,7 +8,8 @@ public class AdminResetPasswordValidator : AbstractValidator<AdminResetPasswordR
     public AdminResetPasswordValidator()
     {
         RuleFor(x => x.Login)
-            .NotEmpty().WithMessage("Campo de login é obrigatório.");
+            .NotEmpty().WithMessage("Campo de login é obrigatório.")
+            .EmailAddress().WithMessage("O campo deve ter o formato de email.");
 
         RuleFor(x => x.Token)
             .NotEmpty().WithMessage("Campo Token é obrigatório.");

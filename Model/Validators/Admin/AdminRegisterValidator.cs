@@ -10,6 +10,7 @@ public class AdminRegisterValidator : AbstractValidator<AdminRegisterVM>
             .NotEmpty().WithMessage("Login é obrigatório")
             .MinimumLength(4).WithMessage("Login deve ter no minimo 4 caracteres")
             .MaximumLength(50).WithMessage("Login Deve ter no máximo 100 caracteres")
+            .EmailAddress().WithMessage("O campo deve ter o formato de email.")
             .Must(x => x == null || (x.Trim() == x && !x.Contains("  "))).WithMessage("Não são permitidos espaços no início, no fim ou espaços duplos. Refaça o campo login."); ;
 
         RuleFor(x => x.Password)

@@ -22,7 +22,7 @@ public class PaymentMethodsController : ControllerBase
     {
         var result = await _paymentMethodService.CreateAsync(request);
         return Created(string.Empty, result);
-    }
+    } 
 
     [HttpPatch("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] PaymentMethodUpdateVM request)

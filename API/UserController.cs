@@ -29,7 +29,7 @@ public class UserController : ControllerBase
         return Ok(user);
     }
 
-    [HttpGet("email/{email}")]
+    [HttpGet("email/{email}", Name = "GeyByEmail")]
     public async Task<IActionResult> GetByEmailAsync(string email)
     {
         var user = await _userService.GetByEmailAsync(email);
@@ -47,9 +47,9 @@ public class UserController : ControllerBase
         try
         {
             var response = await _userService.CreateAsync(request);
-            return Created(string.Empty, response); //201
+            return CreatedAtRoute("GeyByEmail", new { email = request.Email}, response); //201
         }
-        catch (Exception ex)
+        catch (Exception ex) 
         {
             return BadRequest( new {message = ex.Message}); //400
         }

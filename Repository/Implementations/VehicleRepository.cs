@@ -59,13 +59,13 @@ namespace Dealership.Repository.Implementations;
         return rowsAffected > 0;
     }
 
-    public async Task<IEnumerable<Vehicles>> GetByPlateAsync(string plate)
+    public async Task<Vehicles?> GetByPlateAsync(string plate)
     {
         using var db = CreateConnection();
 
         const string sql = @"SELECT * FROM Vehicles WHERE LicensePlate = @Plate";
 
-        return await db.QueryAsync<Vehicles>(sql, new { Plate = plate });
+        return await db.QueryFirstOrDefaultAsync<Vehicles?>(sql, new { Plate = plate });
     }
 
     public async Task<IEnumerable<Vehicles>> GetByModelAsync(int modelId)

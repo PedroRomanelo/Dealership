@@ -30,11 +30,11 @@ public class ContractController(IContractsService contractsService) : Controller
         try
         {
             var contractId = await contractsService.CreateContractAsync(request);
-            // Retorna 201 Created apontando para o recurso gerado (caso tenha um endpoint de GET no futuro)
+            // Retorna 201 Created apontando para o recurso gerado (pata um endpoint de GET no futuro)
             return CreatedAtAction(nameof(CreateContract), new { id = contractId }, new { ContractId = contractId });
         }
         catch (Exception ex)
-        {
+        { 
             return BadRequest(new { message = ex.Message });
         }
     }

@@ -21,8 +21,8 @@ public class InsuranceController : ControllerBase
     public async Task<IActionResult> CreateAsync([FromBody] InsuranceCreateVM request)
     {
         var id = await _insuranceService.CreateAsync(request);
-        return Created(string.Empty, new { id });
-    }
+        return CreatedAtRoute("GetModelByModelId", new { modelId = request.ModelId}, new { id });
+    } 
 
     [Authorize(Roles = "admin,financial")]
     [HttpPatch("{id}")]
@@ -34,7 +34,7 @@ public class InsuranceController : ControllerBase
     }
 
     [Authorize]
-    [HttpGet("model/{modelId}")]
+    [HttpGet("model/{modelId}", Name = "GetModelByModelId")]
     public async Task<IActionResult> GetByModelIdAsync(int modelId)
     {
         var result = await _insuranceService.GetByModelIdAsync(modelId);

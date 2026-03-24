@@ -7,5 +7,5 @@ public class Users
     public required string Email { get; set; }
     public string? PhoneNumber { get; set; }
     public DateTime? BirthDate { get; set; }
-    public bool Status { get; set; }
+    public bool? Status { get; set; }
 }

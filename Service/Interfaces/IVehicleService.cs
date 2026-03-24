@@ -8,6 +8,6 @@ public interface IVehicleService
     Task<int> CreateAsync(VehicleCreateVM request);
     Task<bool> UpdateAsync(int id, VehicleUpdateVM request);
     Task<bool> DeactivateAsync(int id);
-    Task<IEnumerable<VehicleResponseVM>> GetByPlateAsync(string plate);
+    Task<VehicleResponseVM?> GetByPlateAsync(string plate);
     Task<IEnumerable<VehicleResponseVM>> GetByModelIdAsync(int modelId);
 }

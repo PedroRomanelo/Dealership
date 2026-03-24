@@ -9,7 +9,7 @@ public interface IVehicleRepository
     Task<int> UpdateAsync(Vehicles vehicle);
     Task<bool> DeactivateAsync(int id);
     Task<bool> ReactivateAsync(int id);
-    Task<IEnumerable<Vehicles>> GetByPlateAsync(string plate);
+    Task<Vehicles?> GetByPlateAsync(string plate);
     Task<IEnumerable<Vehicles>> GetByModelAsync(int modelId);
     Task<Vehicles?> GetByIdAsync(int id);
 }

@@ -21,11 +21,11 @@ public class AuthAdminController : ControllerBase
         try
         {
             var response = await _authAdminService.RegisterAsync(request);
-            return Ok(response); // Retorna 200 com o token JWT
+            return StatusCode(201, response);
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message }); // Retorna 400 se o usuário já existir
+            return Conflict(new { message = ex.Message }); //409
         }
     }
 
@@ -53,7 +53,7 @@ public class AuthAdminController : ControllerBase
         }
         catch (Exception ex)
         {
-            return BadRequest(new { message = ex.Message });
+            return BadRequest(new { message = ex.Message }); //corrigir - Information Disclosure
         }
     }
 

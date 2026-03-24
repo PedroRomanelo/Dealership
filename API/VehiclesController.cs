@@ -21,9 +21,11 @@ public class VehicleController : ControllerBase
     public async Task<IActionResult> CreateAsync([FromBody] VehicleCreateVM request)
     {
         var id = await _vehicleService.CreateAsync(request);
-        return Created(string.Empty, new { id });
-    }
+        return CreatedAtRoute("GetVehicleByPlate", new { plate = request.LicensePlate }, new {id});
 
+        //lançar 409
+    }
+    
     [HttpPatch("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] VehicleUpdateVM request)
     {
@@ -32,7 +34,7 @@ public class VehicleController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("plate/{plate}")]
+    [HttpGet("plate/{plate}", Name = "GetVehicleByPlate")]
     public async Task<IActionResult> GetByPlateAsync(string plate)
     {
         var result = await _vehicleService.GetByPlateAsync(plate);

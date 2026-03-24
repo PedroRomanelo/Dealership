@@ -8,5 +8,5 @@ public class UserAddresses
     public required string City { get; set; }
     public required string Street { get; set; }
     public required string Number { get; set; }
-    public bool Status { get; set; }
+    public bool? Status { get; set; }
 }

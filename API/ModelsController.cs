@@ -21,8 +21,8 @@ public class ModelsController : ControllerBase
     public async Task<IActionResult> CreateAsync([FromBody] ModelRegisterVM request)
     {
         var model = await _modelsService.CreateAsync(request);
-        return Created (string.Empty, model);
-    }
+        return CreatedAtRoute("GetByModelName", new {modelName = request.Model}, model);
+    } 
 
     [HttpPatch("{id}")]
     public async Task<IActionResult> UpdateAsync(int id, [FromBody] ModelUpdateVM request)
@@ -51,7 +51,7 @@ public class ModelsController : ControllerBase
         return NoContent();
     }
 
-    [HttpGet("name/{modelName}")]
+    [HttpGet("name/{modelName}", Name = "GetByModelName")]
     public async Task<IActionResult> GetByModelAsync(string modelName)
     {
         var response = await _modelsService.GetByModelAsync(modelName);

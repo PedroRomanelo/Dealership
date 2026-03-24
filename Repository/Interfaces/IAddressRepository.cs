@@ -1,5 +1,4 @@
 ﻿using Dealership.Model.Entities;
-using Dealership.Model.Entities;
 
 namespace Dealership.Repository.Interfaces;
 

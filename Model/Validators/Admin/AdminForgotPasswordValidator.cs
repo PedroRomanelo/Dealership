@@ -8,6 +8,7 @@ public class AdminForgotPasswordValidator : AbstractValidator<AdminForgotPasswor
     public AdminForgotPasswordValidator()
     {
         RuleFor(x => x.Login)
-            .NotEmpty().WithMessage("O campo Login não pode ser vazio.");
+            .NotEmpty().WithMessage("O campo Login não pode ser vazio.")
+            .EmailAddress().WithMessage("O campo deve ter o formato de email.");
     }
 }

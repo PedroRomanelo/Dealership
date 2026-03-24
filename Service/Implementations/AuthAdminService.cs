@@ -69,6 +69,7 @@ public class AuthService : IAuthAdminService
             Token = token
         };
     }
+
     public async Task<bool> ForgotPasswordAsync(AdminForgotPasswordRequestVM request)
     {
         var user = await _adminUserRepository.GetByLoginAsync(request.Login);
@@ -84,6 +85,7 @@ public class AuthService : IAuthAdminService
 
         return true;
     }
+
     public async Task<bool> ResetPasswordAsync(AdminResetPasswordRequestVM request)
     {
         var user = await _adminUserRepository.GetByLoginAsync(request.Login);
