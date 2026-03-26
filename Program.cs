@@ -1,3 +1,4 @@
+using Dealership.Cache;
 using Dealership.Extensions;
 using Dealership.Repository.Implementations;
 using Dealership.Repository.Interfaces;
@@ -5,6 +6,7 @@ using Dealership.Service.Implementations;
 using Dealership.Service.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -74,6 +76,20 @@ builder.Services.AddScoped<IContractsService, ContractsService>();
 builder.Services.AddScoped<IReportRepository>(p => new ReportRepository(connectionString!));
 builder.Services.AddScoped<IReportService, ReportService>();
 
+builder.Services.AddScoped<ICacheService, CacheService>();
+
+var redisConnectionString = builder.Configuration.GetConnectionString("RedisConnection");
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = redisConnectionString;
+    options.InstanceName = "Dealership:"; // prefixo nas chaves
+});
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+    ConnectionMultiplexer.Connect(redisConnectionString));
+
+builder.Services.AddOutputCache();
 
 var app = builder.Build();
 
@@ -83,11 +99,13 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseOutputCache();
 app.MapControllers();
 
 app.Run();

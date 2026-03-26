@@ -1,4 +1,5 @@
-﻿using Dealership.Model.Entities;
+﻿using Dealership.Cache;
+using Dealership.Model.Entities;
 using Dealership.Model.Request.Vehicle;
 using Dealership.Model.Response.Vehicle;
 using Dealership.Repository.Interfaces;
@@ -9,10 +10,12 @@ namespace Dealership.Service.Implementations;
 public class VehicleService : IVehicleService
 {
     private readonly IVehicleRepository _vehicleRepository;
+    private readonly ICacheService _cache;
 
-    public VehicleService(IVehicleRepository vehileRepository)
+    public VehicleService(IVehicleRepository vehileRepository, ICacheService cache)
     {
         _vehicleRepository = vehileRepository;
+        _cache = cache;
     }
 
     public async Task<int> CreateAsync(VehicleCreateVM request)
@@ -56,8 +59,19 @@ public class VehicleService : IVehicleService
 
     public async Task<VehicleResponseVM> GetByPlateAsync(string plate)
     {
+        var cacheKey = $"vehicle:{plate}";
+
+        var cached = await _cache.GetAsync<VehicleResponseVM>(cacheKey);
+        if (cached is not null)
+            return cached;
+
         var vehicle = await _vehicleRepository.GetByPlateAsync(plate);
-        return vehicle == null ? null : MapToResponse(vehicle);
+        if (vehicle == null) return null;
+
+        var response = MapToResponse(vehicle);
+        await _cache.SetAsync(cacheKey, response, TimeSpan.FromMinutes(5)); 
+
+        return response;
     }
 
     public async Task<IEnumerable<VehicleResponseVM>> GetByModelIdAsync(int modelId)
